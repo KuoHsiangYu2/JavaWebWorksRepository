@@ -35,7 +35,7 @@ font {
 		<h1>viewAllPicture</h1>
 
 		<c:if test="${not empty pictureTableList}">
-			<!-- 如果 userDataList != null，userDataList物件裡面有資料，就依依把 標題、圖片資料秀出來。 -->
+			<!-- 如果 pictureTableList != null 或 userDataList物件不為空集合，代表 pictureTableList 裡面有資料，依依把 標題、圖片資料秀出來。 -->
 			<table border="1">
 				<tr align="center">
 					<td>
@@ -133,7 +133,7 @@ font {
 			</table>
 		</c:if>
 		<c:if test="${empty pictureTableList}">
-			<!-- 如果 pictureTableList 是 null 或是 空集合 就執行這段程式 -->
+			<!-- 如果 pictureTableList 是 null 或 空集合 就執行這段程式 -->
 			<p>您目前沒上傳任何圖片。</p>
 		</c:if>
 
