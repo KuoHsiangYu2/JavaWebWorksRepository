@@ -27,6 +27,7 @@ public class GetPictureCount extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("讀取資料總筆數失敗");
+			return;
 		}
 
 		response.setCharacterEncoding("UTF-8");

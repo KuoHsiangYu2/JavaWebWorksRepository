@@ -29,7 +29,7 @@ public class DeletePicture extends HttpServlet {
 		int pageNo = 1;
 		int totalPages = 1;
 
-		if (idStr.trim().length() == 0 || idStr == null) {
+		if (idStr == null || idStr.trim().length() == 0) {
 			System.out.println("沒有收到id值，停止DeletePicture程式。");
 			return;
 		}

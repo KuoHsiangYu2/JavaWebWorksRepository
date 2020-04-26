@@ -155,7 +155,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 			sb.append("SELECT id, title" + newLine);
 			sb.append("FROM SavePictureDB1..PictureTable" + newLine);// 指定要撈資料的表格名稱
 			sb.append("ORDER BY id" + newLine);// 用 id 來排序
-			sb.append("OFFSET ? ROW" + newLine);// 省略幾?筆資料
+			sb.append("OFFSET ? ROW" + newLine);// 省略?筆資料
 			sb.append("FETCH NEXT ? ROWS ONLY" + newLine);// 往後多加?筆資料
 			String selectStatementSQL = sb.toString();
 			preparedStatement = connection.prepareStatement(selectStatementSQL);
@@ -587,7 +587,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			newObj.setFile2(oldObj.getFile2());
+			System.out.println("舊資料圖片檔存取失敗");
 		}
 
 		Connection connection = null;

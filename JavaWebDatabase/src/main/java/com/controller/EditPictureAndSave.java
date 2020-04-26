@@ -149,7 +149,7 @@ public class EditPictureAndSave extends HttpServlet {
 			System.out.println("資料庫更新資料失敗。");
 		}
 
-		int totalPages = 0;
+		int totalPages = 1;
 		int pageNo = 1;
 
 		if (pageNoStr == null || pageNoStr.trim().length() == 0) {

@@ -23,7 +23,6 @@ import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTable;
 
-//https://www.facebook.com/groups/748837991920629/permalink/1600114716792948/
 // http://stackoverflow.com/questions/913626/what-should-a-multipart-http-request-with-multiple-files-look-like
 //啟動檔案上傳的功能：
 //1. <form>標籤的 method屬性必須是"POST", 而且

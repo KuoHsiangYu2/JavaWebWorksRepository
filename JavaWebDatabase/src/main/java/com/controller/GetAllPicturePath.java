@@ -41,7 +41,7 @@ public class GetAllPicturePath extends HttpServlet {
 			pageNo = 1;
 		}
 
-		int totalPages = 0;
+		int totalPages = 1;
 
 		List<PictureTable> pictureTableList = null;
 		try {

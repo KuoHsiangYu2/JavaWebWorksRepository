@@ -34,7 +34,7 @@ public class GetPicture extends HttpServlet {
 
 		if (indexStr == null) {
 			// 如果沒有 query string 就結束這段程式。
-			System.out.println("如果沒有 query string 就結束這段程式。");
+			System.out.println("無 query string ，抓取圖片id失敗。");
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class GetPicture extends HttpServlet {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			// 如果不是合法數字就結束這段程式。
-			System.out.println("如果不是合法數字就結束這段程式。");
+			System.out.println("圖片id非合法數字。");
 			return;
 		}
 
@@ -66,7 +66,7 @@ public class GetPicture extends HttpServlet {
 		OutputStream outputStream = null;
 
 		String mimeType = this.getServletContext().getMimeType(pictureName);
-		// System.out.println("mimeType : " + mimeType);
+		// System.out.println("mimeType = " + mimeType);
 		response.setContentType(mimeType);
 		outputStream = response.getOutputStream();
 		byte[] byteBuffer = new byte[8192];

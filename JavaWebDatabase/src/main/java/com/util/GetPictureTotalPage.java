@@ -27,6 +27,7 @@ public class GetPictureTotalPage extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("讀取總頁數失敗。");
+			return;
 		}
 
 		response.setCharacterEncoding("UTF-8");
