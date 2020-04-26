@@ -1,0 +1,13 @@
+# 檔案名稱 .gitignore
+
+# 忽略 *.classpath檔案
+*.classpath
+
+# 忽略 *.project檔案
+*.project
+
+# 忽略 .settings資料夾
+/.settings
+
+# 忽略編譯好的程式 target資料夾
+/target
