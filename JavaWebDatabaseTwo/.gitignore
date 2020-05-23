@@ -1,0 +1,11 @@
+# 檔案名稱 .gitignore
+
+.classpath
+
+.project
+
+*.war
+
+/.settings
+
+/target

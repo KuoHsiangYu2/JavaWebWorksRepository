@@ -1,0 +1,34 @@
+.menu {
+	width: 100%;
+	overflow: auto;
+	background-color: #acd6ff;
+	list-style-type: none;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	border-bottom: 3px solid #cccccc;
+}
+
+.menu li {
+	width: 8em;
+	float: left;
+	border-right: 1px solid #cccccc;
+}
+
+.menu li a {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	color: #333333;
+	line-height: 2.5em;
+}
+
+.menu li a:hover {
+	background-color: #0080ff;
+	color: #ffffff;
+}
+
+.allpage {
+	/* 	width: 1024px; */
+	width: 1700px;
+	margin: auto;
+}
