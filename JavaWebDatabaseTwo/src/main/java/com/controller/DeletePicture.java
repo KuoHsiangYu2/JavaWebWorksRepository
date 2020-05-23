@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
 
@@ -42,7 +43,7 @@ public class DeletePicture extends HttpServlet {
 			return;
 		}
 
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
 		// 把硬碟上的圖片檔案刪除。
 		PictureTableTwo pictureTable = pictureDao.getFullPictureDataById(id);

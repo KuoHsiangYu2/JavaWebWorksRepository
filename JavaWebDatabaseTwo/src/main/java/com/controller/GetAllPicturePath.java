@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IClassTypeTableDao;
+import com.dao.IPictureTableDao;
 import com.dao.impl.ClassTypeTableMSSQLDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableSearchType;
@@ -49,7 +51,7 @@ public class GetAllPicturePath extends HttpServlet {
 		int totalPages = 0;
 
 		List<PictureTableTwo> pictureTableList = null;
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
 		try {
 			if (searchString != null && searchString.trim().length() != 0) {
@@ -78,7 +80,7 @@ public class GetAllPicturePath extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		ClassTypeTableMSSQLDao classTypeDao = new ClassTypeTableMSSQLDao();
+		IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
 		List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
 		request.setAttribute("classTypeList", classTypeList);// 分類清單

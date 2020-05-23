@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
 import com.util.GlobalService;
@@ -52,7 +53,7 @@ public class GetPictureFile extends HttpServlet {
 			return;
 		}
 
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 		PictureTableTwo pictureTable = pictureDao.getFullPictureDataById(index);
 
 		if (pictureTable == null) {

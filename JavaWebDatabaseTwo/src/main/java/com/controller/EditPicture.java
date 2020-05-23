@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
 
@@ -55,7 +56,7 @@ public class EditPicture extends HttpServlet {
 
 		PictureTableTwo pictureTable = new PictureTableTwo();
 
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
 		try {
 			pictureTable = pictureDao.getFullPictureDataById(index);

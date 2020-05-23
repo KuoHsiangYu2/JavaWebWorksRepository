@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+import com.dao.IClassTypeTableDao;
 import com.dao.impl.ClassTypeTableMSSQLDao;
 
 @WebServlet("/GetTypeNameList")
@@ -30,7 +31,7 @@ public class GetTypeNameList extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 
-		ClassTypeTableMSSQLDao classTypeDao = new ClassTypeTableMSSQLDao();
+		IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
 
 		// 從資料庫撈出 <圖片分類> 清單
 		List<String> classTypeList = classTypeDao.getClassTypeStringList();

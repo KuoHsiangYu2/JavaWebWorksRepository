@@ -12,9 +12,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.dao.IClassTypeTableDao;
 import com.model.ClassTypeTable;
 
-public class ClassTypeTableMSSQLDao {
+public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
 	private DataSource dataSource = null;
 
 	public ClassTypeTableMSSQLDao() {
@@ -28,6 +29,7 @@ public class ClassTypeTableMSSQLDao {
 		}
 	}
 
+	@Override
 	public List<ClassTypeTable> getClassTypeList() {
 		List<ClassTypeTable> classTypeList = new ArrayList<ClassTypeTable>();
 
@@ -97,6 +99,7 @@ public class ClassTypeTableMSSQLDao {
 		return classTypeList;
 	}
 
+	@Override
 	public List<String> getClassTypeStringList() {
 		List<String> classTypeStringList = new ArrayList<String>();
 
@@ -161,6 +164,7 @@ public class ClassTypeTableMSSQLDao {
 		return classTypeStringList;
 	}
 
+	@Override
 	public int deleteAll() {
 		int exeNum = 0;
 
@@ -210,6 +214,7 @@ public class ClassTypeTableMSSQLDao {
 		return exeNum;
 	}
 
+	@Override
 	public int insertAll(List<String> classTypeList) {
 		int exeNum = 0;
 		if (classTypeList == null) {

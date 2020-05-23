@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.dao.IClassTypeTableDao;
+import com.dao.IPictureTableDao;
 import com.dao.impl.ClassTypeTableMSSQLDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
@@ -124,7 +126,7 @@ public class EditPictureAndSave extends HttpServlet {
 		pictureTable.setPictureName(pictureName);
 		pictureTable.setTypeName(typeName);
 
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
 		if (true == needSaveFile) {
 			// 如果使用者有上傳圖片才執行這段程式。
@@ -202,7 +204,7 @@ public class EditPictureAndSave extends HttpServlet {
 			return;
 		}
 
-		ClassTypeTableMSSQLDao classTypeDao = new ClassTypeTableMSSQLDao();
+		IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
 		List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
 		request.setAttribute("classTypeList", classTypeList);// 分類清單

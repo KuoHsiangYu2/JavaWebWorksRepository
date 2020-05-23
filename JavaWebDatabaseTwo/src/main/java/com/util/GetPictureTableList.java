@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 
+import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
 
@@ -29,7 +30,7 @@ public class GetPictureTableList extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 
-		PictureTableMSSQLDao pictureTableDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureTableDao = new PictureTableMSSQLDao();
 		List<PictureTableTwo> pictureTableList = pictureTableDao.getAllPicture();
 
 		Map<String, String> pictureTableObj = null;

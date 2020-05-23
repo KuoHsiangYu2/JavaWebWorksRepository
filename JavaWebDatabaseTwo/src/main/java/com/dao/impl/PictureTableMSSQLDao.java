@@ -13,10 +13,11 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialException;
 
+import com.dao.IPictureTableDao;
 import com.model.PictureTableSearchType;
 import com.model.PictureTableTwo;
 
-public class PictureTableMSSQLDao {
+public class PictureTableMSSQLDao implements IPictureTableDao {
 
 	private DataSource dataSource = null;
 	private int pageNo = 1; // 存放目前顯示頁面的編號
@@ -34,16 +35,19 @@ public class PictureTableMSSQLDao {
 		}
 	}
 
+	@Override
 	public int getPageNo() {
 		// 取得現在第幾頁
 		return pageNo;
 	}
 
+	@Override
 	public void setPageNo(int pageNo) {
 		// 設定第幾頁
 		this.pageNo = pageNo;
 	}
 
+	@Override
 	public int getTotalPages() {
 		// 取得全部資料總頁數。
 
@@ -55,6 +59,7 @@ public class PictureTableMSSQLDao {
 		return totalPages;
 	}
 
+	@Override
 	public int savePicture(PictureTableTwo pictureTable) {
 		// 新增一筆資料
 		int exeNum = 0;
@@ -114,6 +119,7 @@ public class PictureTableMSSQLDao {
 		return exeNum;
 	}
 
+	@Override
 	public List<PictureTableTwo> getPagePicture(int pageNo) {
 		// 藉由輸入頁碼編號來指定回傳一部份的資料。
 
@@ -211,6 +217,7 @@ public class PictureTableMSSQLDao {
 		return pictureTableList;
 	}
 
+	@Override
 	public List<PictureTableTwo> getAllPicture() {
 		// 取得所有的資料。
 		List<PictureTableTwo> pictureTableList = new ArrayList<PictureTableTwo>();
@@ -277,6 +284,7 @@ public class PictureTableMSSQLDao {
 		return pictureTableList;
 	}
 
+	@Override
 	public int getCount() {
 		// 取得資料庫裡面圖片資料的筆數
 		int result = 0;
@@ -334,6 +342,7 @@ public class PictureTableMSSQLDao {
 		return result;
 	}
 
+	@Override
 	public PictureTableTwo getFullPictureDataById(int index) {
 		// 取得單一筆資料的所有欄位。
 		PictureTableTwo pictureTable = null;
@@ -403,6 +412,7 @@ public class PictureTableMSSQLDao {
 		return pictureTable;
 	}
 
+	@Override
 	public int saveAndUpdatePictureById(int index, PictureTableTwo newObj) {
 		// 修改所有欄位值。
 		int exeNum = 0;
@@ -482,6 +492,7 @@ public class PictureTableMSSQLDao {
 		return exeNum;
 	}
 
+	@Override
 	public int deletePictureById(int index) {
 		int exeNum = 0;
 
@@ -537,6 +548,7 @@ public class PictureTableMSSQLDao {
 		return exeNum;
 	}
 
+	@Override
 	public int resetTypeNameList(List<PictureTableTwo> updateTypeNameList) {
 		int exeNum = 0;
 		if (updateTypeNameList == null) {
@@ -601,6 +613,7 @@ public class PictureTableMSSQLDao {
 		return exeNum;
 	}
 
+	@Override
 	public List<PictureTableTwo> getPagePicture(int pageNo, String targetString, PictureTableSearchType type) {
 		if (type == PictureTableSearchType.searchString) {
 			// 依據使用者輸入的字來搜尋圖片
@@ -822,6 +835,7 @@ public class PictureTableMSSQLDao {
 		return pictureTableList;
 	}
 
+	@Override
 	public int getTotalPages(String targetString, PictureTableSearchType type) {
 		if (type == PictureTableSearchType.searchString) {
 			// 依據使用者輸入的字來搜尋圖片

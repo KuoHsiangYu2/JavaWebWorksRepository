@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IClassTypeTableDao;
+import com.dao.IPictureTableDao;
 import com.dao.impl.ClassTypeTableMSSQLDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
@@ -21,8 +23,8 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		ClassTypeTableMSSQLDao classTypeDao = new ClassTypeTableMSSQLDao();
-		PictureTableMSSQLDao pictureTableDao = new PictureTableMSSQLDao();
+		IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
+		IPictureTableDao pictureTableDao = new PictureTableMSSQLDao();
 
 		// 從資料庫撈出 <圖片分類> 清單
 		List<String> oldClassTypeList = classTypeDao.getClassTypeStringList();

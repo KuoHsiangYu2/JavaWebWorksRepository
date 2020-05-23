@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IPictureTableDao;
 import com.dao.impl.PictureTableMSSQLDao;
 
 @WebServlet("/GetPictureCount")
@@ -19,7 +20,7 @@ public class GetPictureCount extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 回傳總共有幾筆資料
-		PictureTableMSSQLDao pictureDao = new PictureTableMSSQLDao();
+		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 		int result = 0;
 		try {
 			result = pictureDao.getCount();
