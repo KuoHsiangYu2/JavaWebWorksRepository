@@ -15,12 +15,6 @@ if (false === supportLocalStorage()) {
 	console.log("Browser didn't support window.localStorage");
 }
 
-if (Number.parseInt === undefined) {
-	// 為了支援 IE瀏覽器 加的程式碼
-	console.log("Start loading Number.parseInt()")
-	Number.parseInt = window.parseInt;
-}
-
 if (String.prototype.padStart === undefined) {
 	// 為了支援 IE瀏覽器 加的程式碼
 	console.log("Start loading String.prototype.padStart()");
@@ -29,22 +23,41 @@ if (String.prototype.padStart === undefined) {
 		// truncate if number or convert non-number to 0;
 		targetLength = targetLength >> 0;
 
-		// console.log("targetLength -> " + targetLength);
-		// console.log("this.length -> " + this.length);
 		padString = String((typeof padString !== "undefined" ? padString : " "));
 		if (this.length >= targetLength) {
-			// console.log("第一個if條件判斷式。");
 			return String(this);
 		} else {
-			// console.log("第二個if條件判斷式。");
 			var thisObj = String(this);
 			var thisArray = thisObj.split("");
-			// console.log("thisArray obj");
-			// console.log(thisArray);
 
 			while (thisArray.length < targetLength) {
 				// 從左邊開始插入padString
 				thisArray.unshift(padString);
+			}
+
+			// 最後用 ""字串 隔開組合成一個完整的 String 回傳回去。
+			return thisArray.join("");
+		}
+	}
+}
+
+if (String.prototype.padEnd === undefined) {
+	// 為了支援 IE瀏覽器 加的程式碼
+	console.log("Start loading String.prototype.padEnd()");
+	String.prototype.padEnd = function padEnd(targetLength, padString) {
+
+		targetLength = targetLength >> 0;
+
+		padString = String((typeof padString !== "undefined" ? padString : " "));
+		if (this.length >= targetLength) {
+			return String(this);
+		} else {
+			var thisObj = String(this);
+			var thisArray = thisObj.split("");
+
+			while (thisArray.length < targetLength) {
+				// 從右邊開始插入padString
+				thisArray.push(padString);
 			}
 
 			// 最後用 ""字串 隔開組合成一個完整的 String 回傳回去。
@@ -78,4 +91,33 @@ function supportsLiterals() {
 }
 if (false === supportsLiterals()) {
 	console.log("Browser didn't support String Template literals");
+}
+
+if (Number.parseInt === undefined) {
+	// 為了支援 IE瀏覽器 加的程式碼
+	console.log("Start loading Number.parseInt()")
+	Number.parseInt = window.parseInt;
+}
+
+if (Number.parseFloat === undefined) {
+	// 為了支援 IE瀏覽器 加的程式碼
+	console.log("Start loading Number.parseFloat()")
+	Number.parseFloat = window.parseFloat;
+}
+
+if (Number.isInteger === undefined) {
+	// 為了支援 IE瀏覽器 加的程式碼
+	console.log("Start loading Number.isInteger()");
+	Number.isInteger = function isInteger(input) {
+		if (typeof (input) !== "number") {
+			return false;
+		}
+
+		var inputStr = String(input);
+		if (Number.parseInt(inputStr) === Number.parseFloat(inputStr)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
