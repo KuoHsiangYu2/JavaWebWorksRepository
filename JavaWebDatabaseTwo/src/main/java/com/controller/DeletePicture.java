@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dao.IClassTypeTableDao;
 import com.dao.IPictureTableDao;
+import com.dao.impl.ClassTypeTableMSSQLDao;
 import com.dao.impl.PictureTableMSSQLDao;
 import com.model.PictureTableTwo;
 
@@ -91,6 +93,10 @@ public class DeletePicture extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
+		List<String> classTypeList = classTypeDao.getClassTypeStringList();
+
+		request.setAttribute("classTypeList", classTypeList);// 分類清單
 		request.setAttribute("pictureTableList", pictureTableList);// 一頁五筆的圖片清單
 		request.setAttribute("pageNo", pageNo);// 頁面編號
 		request.setAttribute("totalPages", totalPages);// 總共有幾頁

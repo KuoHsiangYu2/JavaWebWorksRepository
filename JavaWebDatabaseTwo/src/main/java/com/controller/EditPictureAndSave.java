@@ -97,6 +97,7 @@ public class EditPictureAndSave extends HttpServlet {
 		if (pictureName == null) {
 			pictureName = "";
 		}
+
 		int id = 0;
 		if (pictureId == null || pictureId.trim().length() == 0) {
 			// 如果是空字串或null，
@@ -113,23 +114,36 @@ public class EditPictureAndSave extends HttpServlet {
 		// 修改標題字串的長度
 		title = GlobalService.adjustTitleName(title, 50);
 
-		String fileId = GlobalService.getTimeStampStr();
-		pictureName = fileId + "_" + pictureName;
-		pictureName = pictureName.replace(':', '\uFF1A');
-
-		// 修改檔案名稱字串的長度
-		pictureName = GlobalService.adjustFileName(pictureName, 50);
-
 		PictureTableTwo pictureTable = new PictureTableTwo();
 		pictureTable.setId(id);
 		pictureTable.setTitle(title);
-		pictureTable.setPictureName(pictureName);
 		pictureTable.setTypeName(typeName);
 
 		IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
 		if (true == needSaveFile) {
 			// 如果使用者有上傳圖片才執行這段程式。
+
+			System.out.println("origin pictureName : " + pictureName);
+			if (pictureName.indexOf(":\\") != -1) {
+				// Internet Explorer 跟 Microsoft Edge 上傳檔案時，
+				// 檔案名稱包含檔案的絕對路徑在內，因此必須預先處理把絕對路徑拿掉。
+				// 只保留檔案名稱
+				int index = pictureName.lastIndexOf("\\");
+
+				// 進行字串切割，把絕對路徑切掉，只保留檔案名稱。
+				pictureName = pictureName.substring(index + 1, pictureName.length());
+				System.out.println("substring pictureName : " + pictureName);
+			}
+
+			String fileId = GlobalService.getTimeStampStr();
+			pictureName = fileId + "_" + pictureName;
+			pictureName = pictureName.replace(':', '\uFF1A');
+
+			// 修改檔案名稱字串的長度
+			pictureName = GlobalService.adjustFileName(pictureName, 50);
+
+			pictureTable.setPictureName(pictureName);
 
 			File imageFolder = new File("C:/imageData/");
 			if (false == imageFolder.exists()) {

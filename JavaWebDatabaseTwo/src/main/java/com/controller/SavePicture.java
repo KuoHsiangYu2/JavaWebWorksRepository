@@ -116,6 +116,17 @@ public class SavePicture extends HttpServlet {
 		// 修改標題字串的長度
 		title = GlobalService.adjustTitleName(title, 200);
 
+		System.out.println("origin pictureName : " + pictureName);
+		if (pictureName.indexOf(":\\") != -1) {
+			// Internet Explorer 跟 Microsoft Edge 上傳檔案時，
+			// 檔案名稱包含檔案的絕對路徑在內，因此必須預先處理把絕對路徑拿掉。
+			// 只保留檔案名稱
+			int index = pictureName.lastIndexOf("\\");
+
+			// 進行字串切割，把絕對路徑切掉，只保留檔案名稱。
+			pictureName = pictureName.substring(index + 1, pictureName.length());
+			System.out.println("substring pictureName : " + pictureName);
+		}
 		String fileId = GlobalService.getTimeStampStr();
 		pictureName = fileId + "_" + pictureName;
 		pictureName = pictureName.replace(':', '\uFF1A');
@@ -154,10 +165,10 @@ public class SavePicture extends HttpServlet {
 			fileOutputStream.write(byteBuffer);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			errorMsg.put("fileIO", "檔案存取失敗");
+			errorMsg.put("all", "檔案存取失敗");
 		} catch (IOException e) {
 			e.printStackTrace();
-			errorMsg.put("fileIO", "檔案存取失敗");
+			errorMsg.put("all", "檔案存取失敗");
 		} finally {
 			if (fileOutputStream != null) {
 				fileOutputStream.close();
@@ -172,7 +183,7 @@ public class SavePicture extends HttpServlet {
 		if (errorMsg.size() != 0) {
 			// 進行資料庫存取失敗。
 			// 返回首頁
-			System.out.println("資料庫存取失敗。");
+			System.out.println("資料庫存取失敗 或 檔案IO失敗。");
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("uploadFile.jsp");
 			requestDispatcher.forward(request, response);
 			return;

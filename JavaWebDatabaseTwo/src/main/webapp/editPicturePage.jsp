@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,17 +7,18 @@
 <title>editPicturePage</title>
 <style type="text/css">
 fieldset {
-	width: 550px;
+	width: 450px;
 	border: 1px solid #acd6ff;
 	margin: 15px;
 	border-radius: 15px;
 }
 
 .st1 {
-	width: 500px;
+	width: 400px;
 	border-bottom: 1px solid #e0e0e0;
 	margin: 20px;
 	padding-bottom: 10px;
+	/* 	border: 1px solid red; */
 }
 
 .sub {
@@ -29,12 +31,14 @@ fieldset {
 	width: 100px;
 	float: left;
 	text-align: right;
-	/* border:1px solid red; */
+	/* 	border: 1px solid red; */
 	padding-right: 3px;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mainTheme.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/mainTheme.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
 
 <!-- 設定 favicon.ico 圖示 -->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -45,22 +49,27 @@ fieldset {
 		<%@ include file="/includeJSPFile/header.jsp"%>
 		<div style="clear: both;"></div>
 		<p>修改頁面</p>
-		<form action="${pageContext.request.contextPath}/EditPictureAndSave?id=${pictureTable.id}" method="post" enctype="multipart/form-data">
+		<form
+			action="${pageContext.request.contextPath}/EditPictureAndSave?id=${pictureTable.id}"
+			method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>上傳圖片表單</legend>
 				<!-- 圖片id編號 -->
-				<input type="hidden" id="pictureId" name="pictureId" value="${pictureTable.id}" />
+				<input type="hidden" id="pictureId" name="pictureId"
+					value="${pictureTable.id}" />
 				<!-- 頁數編號 -->
 				<input type="hidden" id="pageNo" name="pageNo" value="${pageNo}" />
 				<!-- 是否要返回[viewAllBlockPicture.jsp] -->
-				<input type="hidden" id="backBlockPicture" name="backBlockPicture" value="${backBlockPicture}" />
+				<input type="hidden" id="backBlockPicture" name="backBlockPicture"
+					value="${backBlockPicture}" />
 				<div class="st1">
 					<label class="t1" for="title">標題：</label>
 					<!-- autofocus 自動對焦 -->
 					<!-- autocomplete="off" 阻止瀏覽器自動記憶選單內容 -->
 					<!-- required 必須輸入 -->
 					<div align="left">
-						<input type="text" id="title" name="title" autofocus autocomplete="off" value="${pictureTable.title}" />
+						<input type="text" id="title" name="title" autofocus
+							autocomplete="off" value="${pictureTable.title}" />
 					</div>
 				</div>
 				<div class="st1">
@@ -77,12 +86,12 @@ fieldset {
 					</div>
 				</div>
 				<div class="st1">
-					<img id="previewImg" width="450px" src="/imageData/${pictureTable.pictureName}" />
+					<img id="previewImg" width="450px"
+						src="/imageData/${pictureTable.pictureName}" />
 				</div>
 				<div class="sub">
-					<input type="submit" value="提交" />
-					&nbsp;&nbsp;
-					<input type="button" id="fillTitleName" value="用檔名填入標題" />
+					<input type="submit" value="提交" /> &nbsp;&nbsp; <input
+						type="button" id="fillTitleName" value="用檔名填入標題" />
 				</div>
 			</fieldset>
 		</form>
@@ -118,7 +127,7 @@ fieldset {
 				var fileReader = new FileReader();
 				fileReader.onload = function(e) {
 					previewImgObj.setAttribute("src", e.target.result);
-					previewImgObj.setAttribute("width", "450px");
+					previewImgObj.setAttribute("width", "400px");
 				}
 				fileReader.readAsDataURL(this.files[0]);
 				pictureName = this.files[0].name;
@@ -131,12 +140,19 @@ fieldset {
 
 		var titleObj = document.getElementById("title");
 
+		// 這段程式取出圖片檔名，把[.] 跟 [副檔名] 去除掉，
+		// 接著把修改過的檔名填入標題欄位。
 		var fillTitleNameObj = document.getElementById("fillTitleName");
 		fillTitleNameObj.addEventListener("click", function() {
+			console.log("fillTitleNameObj has been click.");
 			var fileName = pictureName;
 			var pointIndex = fileName.lastIndexOf(".");
+			console.log("pointIndex");
+			console.log(pointIndex);
 			fileName = fileName.substring(0, pointIndex);// 把 [.] 跟 [副檔名] 去除掉。
+			console.log("fileName = [" + fileName + "]");
 			titleObj.setAttribute("value", fileName);
+			titleObj.value = fileName;// IE
 		});
 	</script>
 </body>
