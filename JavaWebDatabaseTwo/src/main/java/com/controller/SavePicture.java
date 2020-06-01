@@ -78,6 +78,7 @@ public class SavePicture extends HttpServlet {
 					}
 				} else {
 					pictureName = GlobalService.getFileName(part);
+					System.out.println("pictureName = " + pictureName);
 					if (pictureName != null && pictureName.trim().length() > 0) {
 						sizeInBytes = part.getSize();
 						inputStream = part.getInputStream();

@@ -1,5 +1,6 @@
 <!-- https://sites.google.com/site/yutingnote/sql/mssqlqudedinbiziliao -->
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -25,8 +26,10 @@ img {
 	transition: 3s;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mainTheme.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/mainTheme.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
 
 <!-- 設定 favicon.ico 圖示 -->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -42,9 +45,7 @@ img {
 		<p>
 			<font class="fontStyle" size="+4">歡迎使用圖片庫存管理系統</font>
 		</p>
-		<br />
-		<br />
-		<img id="showPicture" />
+		<br /> <br /> <img id="showPicture" />
 	</div>
 
 	<script type="text/javascript">
@@ -78,7 +79,8 @@ img {
 					}
 					showPictureObj.classList.add("hide");
 					window.setTimeout(function() {
-						showPictureObj.setAttribute("src", "/imageData/" + picList[picId]);
+						showPictureObj.setAttribute("src", "/imageData/"
+								+ picList[picId]);
 					}, 3000);
 				} else {
 					showPictureObj.classList.remove("hide");
@@ -96,7 +98,10 @@ img {
 				for (var i = 0, len = result.length; i < len; i++) {
 					picList.push(result[i].pictureName);
 				}
-				playPictureWall();
+				if (result.length != 0) {
+					// 如果資料庫裡面有圖片資料才執行輪播牆。
+					playPictureWall();
+				}
 			}
 		}
 		xmlHttpObj2.open("get", "GetPictureTableList", true);
