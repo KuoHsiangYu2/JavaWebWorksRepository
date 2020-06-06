@@ -261,6 +261,10 @@ aside {
 				</table>
 			</c:if>
 		</footer>
+		<br />
+		<br />
+		<br />
+		<br />
 	</div>
 
 	<script type="text/javascript">

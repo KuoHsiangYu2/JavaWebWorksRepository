@@ -1,4 +1,3 @@
-<!-- https://sites.google.com/site/yutingnote/sql/mssqlqudedinbiziliao -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -55,6 +54,8 @@ img {
 	<script type="text/javascript">
 		"use strict";
 
+		// https://sites.google.com/site/yutingnote/sql/mssqlqudedinbiziliao
+		
 		var showObj = document.getElementById("show");
 		var showPictureObj = document.getElementById("showPicture");
 

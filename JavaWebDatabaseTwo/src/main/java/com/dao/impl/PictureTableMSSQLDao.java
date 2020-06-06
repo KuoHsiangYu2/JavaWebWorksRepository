@@ -229,7 +229,12 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 		try {
 			connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
-			String selectStatementSQL = "SELECT id, title, pictureName, typeName FROM SavePictureDB1..PictureTableTwo";
+
+			String newLine = System.getProperty("line.separator");
+			StringBuffer sb = new StringBuffer();
+			sb.append("SELECT id, title, pictureName, typeName" + newLine);
+			sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+			String selectStatementSQL = sb.toString();
 			preparedStatement = connection.prepareStatement(selectStatementSQL);
 			resultSet = preparedStatement.executeQuery();
 			connection.commit();
@@ -296,7 +301,12 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 		try {
 			connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
-			String getCountSQL = "SELECT COUNT(id) AS 'number' FROM SavePictureDB1..PictureTableTwo";
+
+			String newLine = System.getProperty("line.separator");
+			StringBuffer sb = new StringBuffer();
+			sb.append("SELECT COUNT(id) AS 'number'" + newLine);
+			sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+			String getCountSQL = sb.toString();
 			preparedStatement = connection.prepareStatement(getCountSQL);
 			resultSet = preparedStatement.executeQuery();
 			connection.commit();
@@ -353,7 +363,13 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 		try {
 			connection = dataSource.getConnection();
 			connection.setAutoCommit(false);
-			String selectStatementSQL = "SELECT id, title, pictureName, typeName FROM SavePictureDB1..PictureTableTwo WHERE id = ?";
+
+			String newLine = System.getProperty("line.separator");
+			StringBuffer sb = new StringBuffer();
+			sb.append("SELECT id, title, pictureName, typeName" + newLine);
+			sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+			sb.append("WHERE id = ?" + newLine);
+			String selectStatementSQL = sb.toString();
 			preparedStatement = connection.prepareStatement(selectStatementSQL);
 			preparedStatement.setInt(1, index);
 			resultSet = preparedStatement.executeQuery();
