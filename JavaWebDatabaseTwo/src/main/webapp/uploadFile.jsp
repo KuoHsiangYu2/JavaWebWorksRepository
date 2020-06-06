@@ -6,6 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
 <title>uploadFile</title>
 <style type="text/css">
 fieldset {
@@ -16,7 +20,7 @@ fieldset {
 }
 
 .st1 {
-	width: 400px;
+	width: 450px;
 	border-bottom: 1px solid #e0e0e0;
 	margin: 20px;
 	padding-bottom: 10px;
@@ -115,6 +119,7 @@ fieldset {
 			}
 		}
 		xmlHttpObj.open("get", "GetTypeNameList", true);// 第三個參數設定 true，代表開啟非同步模式。
+		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj.send();
 
 		var showObj = document.getElementById("show");
@@ -126,6 +131,7 @@ fieldset {
 			}
 		}
 		xmlHttpObj2.open("get", "GetPictureCount", true);
+		xmlHttpObj2.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj2.send();
 
 		var file2Obj = document.getElementById("file2");
@@ -153,19 +159,16 @@ fieldset {
 
 		var resetObj = document.getElementById("reset");
 		var titleObj = document.getElementById("title");
-		resetObj
-				.addEventListener(
-						"click",
-						function() {
-							// 當 reset按鈕 被按下時觸發此事件，
-							// 清空欄位，並且讓瀏覽器再發送一次請求重新整理頁面。
-							previewImgObj.removeAttribute("src");
-							previewImgObj.setAttribute("width", "0px");
-							pictureName = "";
-							titleObj.setAttribute("value", "");
-							//history.go(0);// 重新刷新頁面
-							window.location.href = "${pageContext.request.contextPath}/uploadFile.jsp";// 重新刷新頁面
-						});
+		resetObj.addEventListener("click", function() {
+			// 當 reset按鈕 被按下時觸發此事件，
+			// 清空欄位，並且讓瀏覽器再發送一次請求重新整理頁面。
+			previewImgObj.removeAttribute("src");
+			previewImgObj.setAttribute("width", "0px");
+			pictureName = "";
+			titleObj.setAttribute("value", "");
+			//history.go(0);// 重新刷新頁面
+			window.location.href = "${pageContext.request.contextPath}/uploadFile.jsp";// 重新刷新頁面
+		});
 
 		// 這段程式取出圖片檔名，把[.] 跟 [副檔名] 去除掉，
 		// 接著把修改過的檔名填入標題欄位。

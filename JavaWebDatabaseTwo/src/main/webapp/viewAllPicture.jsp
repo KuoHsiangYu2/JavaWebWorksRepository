@@ -1,10 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.net.URLEncoder"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
 <title>viewAllPicture</title>
 <style type="text/css">
 a {
@@ -60,26 +66,28 @@ aside {
 	width: 100%;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mainTheme.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/mainTheme.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
 
 <!-- 設定 favicon.ico 圖示 -->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 
 </head>
 <body>
-	<jsp:useBean id="viewStatusData" class="com.model.ViewStatus" scope="page" />
+	<jsp:useBean id="viewStatusData" class="com.model.ViewStatus"
+		scope="page" />
 
 	<div align="center" class="allpage">
 		<header>
 			<%@ include file="/includeJSPFile/header.jsp"%>
 			<div style="clear: both;"></div>
 			<div class="searchDiv">
-				<form action="${pageContext.request.contextPath}/GetAllPicturePath" method="get" enctype="application/x-www-form-urlencoded">
-					標題：
-					<input type="text" id="searchString" name="searchString" />
-					<input type="submit" value="搜尋" />
-					<br />
+				<form action="${pageContext.request.contextPath}/GetAllPicturePath"
+					method="get" enctype="application/x-www-form-urlencoded">
+					標題： <input type="text" id="searchString" name="searchString"
+						value="${searchString}" /> <input type="submit" value="搜尋" /> <br />
 					<br />
 				</form>
 			</div>
@@ -92,16 +100,14 @@ aside {
 			<!-- align="left" -->
 			<aside>
 				<h2>分類清單</h2>
-				<input id="radio0" type="radio" name="typeNameList" value="全部" />
-				<label for="radio0">
-					<font size="+2">全部</font>
-				</label>
-				<br />
-				<br />
-				<c:forEach items="${classTypeList}" var="classType" varStatus="varStatus">
-					<input id="radio${varStatus.count}" type="radio" name="typeNameList" value="${classType}" />
-					<label for="radio${varStatus.count}">
-						<font size="+2">${classType}</font>
+				<input id="radio0" type="radio" name="typeNameList" value="全部" /> <label
+					for="radio0"> <font size="+2">全部</font>
+				</label> <br /> <br />
+				<c:forEach items="${classTypeList}" var="classType"
+					varStatus="varStatus">
+					<input id="radio${varStatus.count}" type="radio"
+						name="typeNameList" value="${classType}" />
+					<label for="radio${varStatus.count}"> <font size="+2">${classType}</font>
 					</label>
 					<br />
 					<br />
@@ -111,73 +117,55 @@ aside {
 				<c:if test="${not empty pictureTableList}">
 					<!-- 如果 userDataList != null，userDataList物件裡面有資料，就依依把 標題、圖片資料秀出來。 -->
 					<!-- true 代表裡面有資料 -->
-					<jsp:setProperty name="viewStatusData" property="viewEmpty" value="true" />
+					<jsp:setProperty name="viewStatusData" property="viewEmpty"
+						value="true" />
 					<button id="decreaseFontSize">
-						<font size="+2">縮小</font>
+						<font size="+1">縮小</font>
 					</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<button id="resetFontSize">
-						<font size="+2">重設大小</font>
+						<font size="+1">重設大小</font>
 					</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<button id="increaseFontSize">
-						<font size="+2">放大</font>
+						<font size="+1">放大</font>
 					</button>
 					<br />
 					<br />
 					<table border="1">
 						<tr align="center">
-							<td>
-								<font size="+2">編號</font>
-							</td>
-							<td>
-								<font size="+2">標題</font>
-							</td>
-							<td>
-								<font size="+2">圖</font>
-							</td>
-							<td>
-								<font size="+2">分類</font>
-							</td>
-							<td>
-								<font size="+2">編輯</font>
-							</td>
-							<td>
-								<font size="+2">刪除</font>
-							</td>
-							<td>
-								<font size="+2">下載</font>
-							</td>
+							<td><font size="+1">編號</font></td>
+							<td><font size="+1">標題</font></td>
+							<td><font size="+1">圖</font></td>
+							<td><font size="+1">分類</font></td>
+							<td><font size="+1">編輯</font></td>
+							<td><font size="+1">刪除</font></td>
+							<td><font size="+1">下載</font></td>
 						</tr>
 						<c:forEach var="picture" items="${pictureTableList}">
 							<tr>
-								<td width="120px">
-									<font class="fontVariableSize">${picture.id}</font>
+								<td width="120px"><font class="fontVariableSize">${picture.id}</font>
 								</td>
-								<td width="300px">
-									<font class="fontVariableSize">${picture.title}</font>
+								<td width="300px"><font class="fontVariableSize">${picture.title}</font>
 								</td>
-								<td width="400px">
-									<img src="/imageData/${picture.pictureName}" width="400px" />
+								<td width="300px"><img
+									src="/imageData/${picture.pictureName}" width="300px" /></td>
+								<td align="center" width="100px"><font size="+1">${picture.typeName}</font>
 								</td>
-								<td align="center" width="100px">
-									<font size="+2">${picture.typeName}</font>
-								</td>
+								<td align="center" width="60px"><a
+									href="${pageContext.request.contextPath}/EditPicture?id=${picture.id}&pageNo=${pageNo}">
+										<font size="+1">編輯</font>
+								</a></td>
 								<td align="center" width="60px">
-									<a href="${pageContext.request.contextPath}/EditPicture?id=${picture.id}&pageNo=${pageNo}">
-										<font size="+2">編輯</font>
-									</a>
-								</td>
-								<td align="center" width="60px">
-									<p class="delete" hrefName="${pageContext.request.contextPath}/DeletePicture?id=${picture.id}&pageNo=${pageNo}">
-										<font size="+2">刪除</font>
+									<p class="delete"
+										hrefName="${pageContext.request.contextPath}/DeletePicture?id=${picture.id}&pageNo=${pageNo}">
+										<font size="+1">刪除</font>
 									</p>
 								</td>
-								<td align="center" width="60px">
-									<a href="${pageContext.request.contextPath}/GetPictureFile?id=${picture.id}">
-										<font size="+2">下載</font>
-									</a>
-								</td>
+								<td align="center" width="60px"><a
+									href="${pageContext.request.contextPath}/GetPictureFile?id=${picture.id}">
+										<font size="+1">下載</font>
+								</a></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -185,7 +173,8 @@ aside {
 				<c:if test="${empty pictureTableList}">
 					<!-- 如果 pictureTableList 是 null 或是 空集合 就執行這段程式 -->
 					<!-- false 代表裡面沒有資料 -->
-					<jsp:setProperty name="viewStatusData" property="viewEmpty" value="false" />
+					<jsp:setProperty name="viewStatusData" property="viewEmpty"
+						value="false" />
 					<div class="horizontalGroup">
 						<div style="width: 340px;"></div>
 						<div>
@@ -224,59 +213,50 @@ aside {
 				%>
 				<table border="1">
 					<tr>
-						<td width="90px" align="center">
-							<c:choose>
+						<td width="90px" align="center"><c:choose>
 								<c:when test="${pageNo > 1}">
-									<font color="blue">
-										<a href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=1&typeName=${typeName}&searchString=${searchString}">第一頁</a>
+									<font color="blue"> <a
+										href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=1&typeName=${typeName}&searchString=${searchString}">第一頁</a>
 									</font>
 								</c:when>
 								<c:otherwise>
 									第一頁
 								</c:otherwise>
-							</c:choose>
-						</td>
-						<td width="90px" align="center">
-							<c:choose>
+							</c:choose></td>
+						<td width="90px" align="center"><c:choose>
 								<c:when test="${pageNo > 1}">
-									<font color="blue">
-										<a href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${pageNo - 1}&typeName=${typeName}&searchString=${searchString}">上一頁</a>
+									<font color="blue"> <a
+										href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${pageNo - 1}&typeName=${typeName}&searchString=${searchString}">上一頁</a>
 									</font>
 								</c:when>
 								<c:otherwise>
 									上一頁
 								</c:otherwise>
-							</c:choose>
-						</td>
-						<td width="110px" align="center">
-							<select id="pageId">
-							</select>
-						</td>
-						<td width="90px" align="center">
-							<c:choose>
+							</c:choose></td>
+						<td width="110px" align="center"><select id="pageId">
+						</select></td>
+						<td width="90px" align="center"><c:choose>
 								<c:when test="${pageNo != totalPages}">
-									<font color="blue">
-										<a href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${pageNo + 1}&typeName=${typeName}&searchString=${searchString}">下一頁</a>
+									<font color="blue"> <a
+										href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${pageNo + 1}&typeName=${typeName}&searchString=${searchString}">下一頁</a>
 									</font>
 								</c:when>
 								<c:otherwise>
 									下一頁
 								</c:otherwise>
-							</c:choose>
-						</td>
-						<td width="90px" align="center">
-							<c:choose>
+							</c:choose></td>
+						<td width="90px" align="center"><c:choose>
 								<c:when test="${pageNo != totalPages}">
-									<font color="blue">
-										<a href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${totalPages}&typeName=${typeName}&searchString=${searchString}">最末頁</a>
+									<font color="blue"> <a
+										href="${pageContext.request.contextPath}/GetAllPicturePath?pageNo=${totalPages}&typeName=${typeName}&searchString=${searchString}">最末頁</a>
 									</font>
 								</c:when>
 								<c:otherwise>
 									最末頁
 								</c:otherwise>
-							</c:choose>
-						</td>
-						<td width="180px" align="center">第 ${pageNo} 頁 / 共 ${totalPages} 頁</td>
+							</c:choose></td>
+						<td width="180px" align="center">第 ${pageNo} 頁 / 共
+							${totalPages} 頁</td>
 					</tr>
 				</table>
 			</c:if>

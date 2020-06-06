@@ -8,7 +8,7 @@ IDE：Eclipse IDE for Enterprise Java Developers 2020-03 (4.15.0)
 Java jdk version：1.8.0_162  
 資料庫：Microsoft SQL Server 2019  
 
-本作品應用到的技術有：Java、JSP、Servlet、JDBC、AJAX
+本作品應用到的技術有：Java、JSP、Servlet、JDBC、AJAX、HTML、CSS、JavaScript、jQuery  
 
 ```no-highlight
 預前準備  

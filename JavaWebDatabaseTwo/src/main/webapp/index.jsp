@@ -6,6 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
 <title>index</title>
 <style type="text/css">
 .fontStyle {
@@ -62,6 +66,7 @@ img {
 			}
 		}
 		xmlHttpObj.open("get", "GetPictureCount", true);
+		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj.send();
 
 		function playPictureWall() {
@@ -79,8 +84,7 @@ img {
 					}
 					showPictureObj.classList.add("hide");
 					window.setTimeout(function() {
-						showPictureObj.setAttribute("src", "/imageData/"
-								+ picList[picId]);
+						showPictureObj.setAttribute("src", "/imageData/" + picList[picId]);
 					}, 3000);
 				} else {
 					showPictureObj.classList.remove("hide");
@@ -105,6 +109,7 @@ img {
 			}
 		}
 		xmlHttpObj2.open("get", "GetPictureTableList", true);
+		xmlHttpObj2.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj2.send();
 	</script>
 </body>

@@ -1,11 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
 <title>editTypeNameList</title>
 <style type="text/css">
 .no {
+	/* 標記編號的CSS */
 	width: 30px;
 }
 
@@ -13,8 +20,10 @@ input[readonly="readonly"] {
 	background-color: #dddddd;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mainTheme.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/mainTheme.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
 
 <!-- 設定 favicon.ico 圖示 -->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -23,14 +32,14 @@ input[readonly="readonly"] {
 	<div align="center" class="allpage">
 		<%@ include file="/includeJSPFile/header.jsp"%>
 		<div style="clear: both;"></div>
-		<form action="${pageContext.request.contextPath}/SaveAndUpdateEditTypeList" method="post" enctype="application/x-www-form-urlencoded">
+		<form
+			action="${pageContext.request.contextPath}/SaveAndUpdateEditTypeList"
+			method="post" enctype="application/x-www-form-urlencoded">
 			<table id="showData">
 			</table>
 			<br />
 			<button id="addRow" type="button">新增一列</button>
-			<br />
-			<br />
-			<input type="submit" value="提交" />
+			<br /> <br /> <input type="submit" value="提交" />
 		</form>
 	</div>
 
@@ -107,6 +116,7 @@ input[readonly="readonly"] {
 			}
 		}
 		xmlHttpObj.open("get", "GetTypeNameList", true);// 第三個參數設定 true，代表開啟非同步模式。
+		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");// 禁止瀏覽器快取
 		xmlHttpObj.send();
 
 		function renameTdNo() {

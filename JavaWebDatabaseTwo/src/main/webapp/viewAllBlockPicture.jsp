@@ -1,12 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
 <title>viewAllBlockPicture</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mainTheme.css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/mainTheme.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/javascript/publicFunction.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 
 <!-- 設定 favicon.ico 圖示 -->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -50,14 +59,16 @@
 	<div align="center" class="allpage">
 		<%@ include file="/includeJSPFile/header.jsp"%>
 		<div style="clear: both;"></div>
-		<br />
-		<br />
-		<div align="left" id="showPictures" style="width: 1500px;"></div>
+		<br /> <br />
+		<div align="left" id="showPictures" style="width: 1020px;"></div>
 		<button class="js-back-to-top back-to-top" title="Top">Top</button>
 	</div>
 
 	<script type="text/javascript">
 		"use strict";
+
+		// IE下Ajax快取問題的快速解決方法(get方式)
+		// https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/287049/
 
 		var showPicturesObj = document.getElementById("showPictures");
 		var picList = [];// 圖片名稱清單
@@ -72,7 +83,7 @@
 			var imgObj = null;
 			for (var i = 0, length = picList.length; i < length; i++) {
 				imgObj = document.createElement("img");
-				imgObj.setAttribute("width", "500px");
+				imgObj.setAttribute("width", "340px");
 				imgObj.setAttribute("src", "/imageData/" + picList[i]);
 				imgObj.setAttribute("jumpHref", "${pageContext.request.contextPath}/EditPicture?id=" + picId[i] + "&backBlockPicture=true");
 				imgObj.setAttribute("onclick", "clickImg(this)");
@@ -90,10 +101,15 @@
 					picList.push(result[i].pictureName);
 					picId.push(result[i].id);
 				}
+				console.log("picList");
+				console.log(picList);
+				console.log("picId");
+				console.log(picId);
 				addPictureToDiv();
 			}
 		}
 		xmlHttpObj.open("get", "GetPictureTableList", true);
+		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj.send();
 
 		// https://kknews.cc/zh-tw/news/k8o5arb.html
