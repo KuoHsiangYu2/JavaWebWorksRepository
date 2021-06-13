@@ -24,7 +24,7 @@ JavaWebDatabaseTwo專案 應用到的技術有：Java、JSP、Servlet、JDBC、A
 
 1.
 打開 Eclipse project ，
-進入 src\main\resources\ 資料夾，
+創建 src\main\resources\ 資料夾，
 接著創建 DatabaseData.txt 檔案
 輸入下述內容
 username=『資料庫帳號名稱』
