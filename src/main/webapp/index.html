@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <script type="text/javascript" src=".\lib\MyStorageLibrary.js"></script>
+    <style type="text/css">
+        body {
+            background-color: rgb(248, 248, 206);
+        }
+
+        .horizontalGroup {
+            /* 讓裡面的div元素一個一個水平排列在一起。 */
+            display: flex;
+            width: 100%;
+            /* border: 1px solid red; */
+        }
+    </style>
+</head>
+
+<body>
+    <p>index.html</p>
+
+    <p>
+        <label>姓名：</label><input type="text" id="userName" name="userName" />
+    </p>
+    <p>
+        <label>職業：</label><input type="text" id="job" name="job" />
+    </p>
+    <p>
+        留言板：<br />
+        <textarea id="messageBoard" name="messageBoard" rows="5" cols="50"></textarea>
+    </p>
+
+    <div class="horizontalGroup">
+        <input type="button" id="save" value="儲存資料" />
+        <div style="width: 30px;"></div>
+        <input type="button" id="clear" value="清空localStorage" />
+        <div style="width: 30px;"></div>
+        <input type="button" id="showData" value="顯示儲存資料" />
+        <div style="width: 30px;"></div>
+        <input type="button" id="reset" name="reset" value="重設" />
+    </div>
+
+    <br />
+
+    <div class="horizontalGroup">
+        <a href="page2.html">page2.html</a>
+    </div>
+
+    <script type="text/javascript">
+        let myStorage = new MyStorage('JSSample');
+
+        let userNameObj = document.getElementById('userName');
+        let jobObj = document.getElementById('job');
+        let messageBoardObj = document.getElementById('messageBoard');
+
+        let saveObj = document.getElementById('save');
+        let clearObj = document.getElementById('clear');
+        let showDataObj = document.getElementById('showData');
+        let resetObj = document.getElementById('reset');
+
+        saveObj.addEventListener('click', function () {
+            myStorage.setItem('userName', userNameObj.value);
+            myStorage.setItem('job', jobObj.value);
+            myStorage.setItem('messageBoard', messageBoardObj.value);
+        });
+
+        clearObj.addEventListener('click', function () {
+            myStorage.clear();
+        });
+
+        showDataObj.addEventListener('click', function () {
+            userNameObj.value = myStorage.getItem('userName') || '';
+            jobObj.value = myStorage.getItem('job') || '';
+            messageBoardObj.value = myStorage.getItem('messageBoard') || '';
+        });
+
+        resetObj.addEventListener('click', function () {
+            userNameObj.value = '';
+            jobObj.value = '';
+            messageBoardObj.value = '';
+        });
+    </script>
+</body>
+
+</html>

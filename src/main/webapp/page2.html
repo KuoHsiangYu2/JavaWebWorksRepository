@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>page2</title>
+    <script type="text/javascript" src=".\lib\MyStorageLibrary.js"></script>
+    <style type="text/css">
+        body {
+            background-color: rgb(210, 207, 253);
+        }
+
+        .horizontalGroup {
+            /* 讓裡面的div元素一個一個水平排列在一起。 */
+            display: flex;
+            width: 100%;
+            /* border: 1px solid red; */
+        }
+    </style>
+</head>
+
+<body>
+    <p>page2.html</p>
+    <p>顯示 index.html 儲存的資料內容。</p>
+
+    <p>
+        <label>姓名：</label><input type="text" id="userName" name="userName" />
+    </p>
+    <p>
+        <label>職業：</label><input type="text" id="job" name="job" />
+    </p>
+    <p>
+        留言板：<br />
+        <textarea id="messageBoard" name="messageBoard" rows="5" cols="50"></textarea>
+    </p>
+
+    <br />
+
+    <div class="horizontalGroup">
+        <a href="index.html">index.html</a>
+    </div>
+
+    <script type="text/javascript">
+        let myStorage = new MyStorage('JSSample');
+
+        let userNameObj = document.getElementById('userName');
+        let jobObj = document.getElementById('job');
+        let messageBoardObj = document.getElementById('messageBoard');
+
+        userNameObj.value = myStorage.getItem('userName') || '';
+        jobObj.value = myStorage.getItem('job') || '';
+        messageBoardObj.value = myStorage.getItem('messageBoard') || '';
+    </script>
+</body>
+
+</html>

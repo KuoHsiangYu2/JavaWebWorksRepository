@@ -1,0 +1,10 @@
+# 檔案名稱 .gitignore
+
+.classpath
+.project
+*.war
+
+/.settings
+/target
+/src/main/webapp/META-INF/context.xml
+/src/main/resources/DatabaseData.txt
