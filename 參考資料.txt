@@ -1,0 +1,18 @@
+﻿參考資料
+
+[Day 2 ] step by step in Hello Servlet
+https://ithelp.ithome.com.tw/articles/10184842
+.
+.
+JSTL <c:forEach>,<c:forTokens>標簽
+http://tw.gitbook.net/jsp/jstl_core_foreach_tag.html
+.
+.
+<c:forEach>, <c:forTokens> 标签
+https://www.runoob.com/jsp/jstl-core-foreach-tag.html
+.
+.
+JSP 基础之 JSTL <c:forEach>用法
+https://www.cnblogs.com/jokerjason/p/5740917.html
+.
+.
