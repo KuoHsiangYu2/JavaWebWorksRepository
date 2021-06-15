@@ -13,7 +13,7 @@ public class InitialTable {
         // 在資料庫建立一個table
 
         // CREATE TABLE (Transact-SQL) IDENTITY (屬性)
-        // https://reurl.cc/dGWvLq
+        // https://docs.microsoft.com/zh-tw/sql/t-sql/statements/create-table-transact-sql-identity-property?view=sql-server-ver15
         DatabaseData.init();
         String connectionURL = DatabaseData.getConnectionURL();
         String username = DatabaseData.getUsername();

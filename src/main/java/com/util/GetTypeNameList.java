@@ -33,7 +33,7 @@ public class GetTypeNameList extends HttpServlet {
 
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
 
-        // 從資料庫撈出 <圖片分類> 清單
+        /* 從資料庫撈出 <圖片分類> 清單 */
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
         JSONArray jsonArray = new JSONArray();
@@ -41,7 +41,7 @@ public class GetTypeNameList extends HttpServlet {
             jsonArray.put(classTypeList.get(i));
         }
 
-        // 一定要加這行程式碼印出來。才可以讓AJAX把動態產生的下拉式選單製作出來。
+        /* 一定要加這行程式碼印出來。才可以讓AJAX把動態產生的下拉式選單製作出來。 */
         response.getWriter().print(jsonArray.toString());
     }
 }

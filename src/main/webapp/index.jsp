@@ -71,7 +71,7 @@ img {
 		xmlHttpObj.send();
 
 		function playPictureWall() {
-			// 播放圖片輪播牆
+			/* 播放圖片輪播牆 */
 			var picListLength = picList.length;
 			var picId = 0;
 			showPictureObj.setAttribute("src", "/imageData/" + picList[0]);
@@ -104,7 +104,7 @@ img {
 					picList.push(result[i].pictureName);
 				}
 				if (result.length != 0) {
-					// 如果資料庫裡面有圖片資料才執行輪播牆。
+					/* 如果資料庫裡面有圖片資料才執行輪播牆。 */
 					playPictureWall();
 				}
 			}

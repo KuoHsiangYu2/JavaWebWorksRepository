@@ -36,8 +36,8 @@ public class EditPictureAndSave extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // editPicturePage.jsp 發送 post請求呼叫這隻 Servlet，
-        // 開始把使用者輸入資料更新進資料庫裡面。
+        /* editPicturePage.jsp 發送 post請求呼叫這隻 Servlet， */
+        /* 開始把使用者輸入資料更新進資料庫裡面。 */
         String pictureId = "";
         String pageNoStr = "";
         String title = "";
@@ -47,8 +47,8 @@ public class EditPictureAndSave extends HttpServlet {
         InputStream inputStream = null;
         Collection<Part> parts = request.getParts();
 
-        // 由 parts != null 來判斷此上傳資料是否為HTTP multipart request
-        // 如果這是一個上傳資料的表單
+        /* 由 parts != null 來判斷此上傳資料是否為HTTP multipart request */
+        /* 如果這是一個上傳資料的表單 */
         String partName = "";
         String value = "";
         String typeName = "";
@@ -61,7 +61,7 @@ public class EditPictureAndSave extends HttpServlet {
                 partName = part.getName();
                 value = request.getParameter(partName);
 
-                // 1. 讀取使用者輸入資料
+                /* 1. 讀取使用者輸入資料 */
                 if (part.getContentType() == null) {
                     if (partName.equals("title")) {
                         title = value;
@@ -74,7 +74,7 @@ public class EditPictureAndSave extends HttpServlet {
                     } else if (partName.equals("backBlockPicture")) {
                         backBlockPicture = value;
                     } else {
-                        // do nothing
+                        /* do nothing */
                     }
                 } else {
                     pictureName = GlobalService.getFileName(part);
@@ -86,7 +86,7 @@ public class EditPictureAndSave extends HttpServlet {
                         System.out.println("使用者沒有上傳圖片檔");
                     }
                 }
-            } // end of while-loop
+            } /* end of while-loop */
 
         } else {
             System.out.println("error. 此表單不是上傳檔案的表單");
@@ -102,8 +102,8 @@ public class EditPictureAndSave extends HttpServlet {
 
         int id = 0;
         if (pictureId == null || pictureId.trim().length() == 0) {
-            // 如果是空字串或null，
-            // 代表沒有接到圖片id的值。
+            /* 如果是空字串或null， */
+            /* 代表沒有接到圖片id的值。 */
             pictureId = "error";
         }
         try {
@@ -113,7 +113,7 @@ public class EditPictureAndSave extends HttpServlet {
             return;
         }
 
-        // 修改標題字串的長度
+        /* 修改標題字串的長度 */
         title = GlobalService.adjustTitleName(title, 50);
 
         PictureTableTwo pictureTable = new PictureTableTwo();
@@ -124,16 +124,16 @@ public class EditPictureAndSave extends HttpServlet {
         IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
         if (true == needSaveFile) {
-            // 如果使用者有上傳圖片才執行這段程式。
+            /* 如果使用者有上傳圖片才執行這段程式。 */
 
             System.out.println("origin pictureName : " + pictureName);
             if (pictureName.indexOf(":\\") != -1) {
-                // Internet Explorer 跟 Microsoft Edge 上傳檔案時，
-                // 檔案名稱包含檔案的絕對路徑在內，因此必須預先處理把絕對路徑拿掉。
-                // 只保留檔案名稱
+                /* Internet Explorer 跟 Microsoft Edge 上傳檔案時， */
+                /* 檔案名稱包含檔案的絕對路徑在內，因此必須預先處理把絕對路徑拿掉。 */
+                /* 只保留檔案名稱 */
                 int index = pictureName.lastIndexOf("\\");
 
-                // 進行字串切割，把絕對路徑切掉，只保留檔案名稱。
+                /* 進行字串切割，把絕對路徑切掉，只保留檔案名稱。 */
                 pictureName = pictureName.substring(index + 1, pictureName.length());
                 System.out.println("substring pictureName : " + pictureName);
             }
@@ -142,7 +142,7 @@ public class EditPictureAndSave extends HttpServlet {
             pictureName = fileId + "_" + pictureName;
             pictureName = pictureName.replace(':', '\uFF1A');
 
-            // 修改檔案名稱字串的長度
+            /* 修改檔案名稱字串的長度 */
             pictureName = GlobalService.adjustFileName(pictureName, 50);
 
             pictureTable.setPictureName(pictureName);
@@ -152,7 +152,7 @@ public class EditPictureAndSave extends HttpServlet {
                 imageFolder.mkdirs();
             }
 
-            // 把硬碟上舊的圖片檔案刪除。
+            /* 把硬碟上舊的圖片檔案刪除。 */
             PictureTableTwo pictureTable2 = pictureDao.getFullPictureDataById(id);
             String filename = pictureTable2.getPictureName();
             File pictureFile = new File("C:/imageData/" + filename);
@@ -182,7 +182,7 @@ public class EditPictureAndSave extends HttpServlet {
                 }
             }
         } else {
-            // 使用者沒有上傳圖片
+            /* 使用者沒有上傳圖片 */
             pictureTable.setPictureName(null);
         }
 
@@ -215,7 +215,7 @@ public class EditPictureAndSave extends HttpServlet {
         }
 
         if (backBlockPicture != null && backBlockPicture.trim().length() != 0) {
-            // 回到圖片磚畫面。
+            /* 回到圖片磚畫面。 */
             response.sendRedirect(request.getContextPath() + "/viewAllBlockPicture.jsp");
             return;
         }
@@ -223,10 +223,10 @@ public class EditPictureAndSave extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
-        request.setAttribute("classTypeList", classTypeList);// 分類清單
-        request.setAttribute("pictureTableList", pictureTableList);// 一頁五筆的圖片清單
-        request.setAttribute("pageNo", pageNo);// 頁面編號
-        request.setAttribute("totalPages", totalPages);// 總共有幾頁
+        request.setAttribute("classTypeList", classTypeList);/* 分類清單 */
+        request.setAttribute("pictureTableList", pictureTableList);/* 一頁五筆的圖片清單 */
+        request.setAttribute("pageNo", pageNo);/* 頁面編號 */
+        request.setAttribute("totalPages", totalPages);/* 總共有幾頁 */
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
         requestDispatcher.forward(request, response);

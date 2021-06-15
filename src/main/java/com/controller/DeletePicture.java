@@ -47,7 +47,7 @@ public class DeletePicture extends HttpServlet {
 
         IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
-        // 把硬碟上的圖片檔案刪除。
+        /* 把硬碟上的圖片檔案刪除。 */
         PictureTableTwo pictureTable = pictureDao.getFullPictureDataById(id);
         String filename = pictureTable.getPictureName();
         File pictureFile = new File("C:/imageData/" + filename);
@@ -73,16 +73,16 @@ public class DeletePicture extends HttpServlet {
         }
 
         try {
-            // 取得總頁數。
+            /* 取得總頁數。 */
             totalPages = pictureDao.getTotalPages();
         } catch (Exception e1) {
             e1.printStackTrace();
         }
 
         if (pageNo > totalPages) {
-            // 如果刪除資料後，
-            // 當前頁數比總頁數大，
-            // 重新修正，把當前頁數設定為總頁數。
+            /* 如果刪除資料後， */
+            /* 當前頁數比總頁數大， */
+            /* 重新修正，把當前頁數設定為總頁數。 */
             pageNo = totalPages;
         }
 
@@ -96,10 +96,10 @@ public class DeletePicture extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
-        request.setAttribute("classTypeList", classTypeList);// 分類清單
-        request.setAttribute("pictureTableList", pictureTableList);// 一頁五筆的圖片清單
-        request.setAttribute("pageNo", pageNo);// 頁面編號
-        request.setAttribute("totalPages", totalPages);// 總共有幾頁
+        request.setAttribute("classTypeList", classTypeList);/* 分類清單 */
+        request.setAttribute("pictureTableList", pictureTableList);/* 一頁五筆的圖片清單 */
+        request.setAttribute("pageNo", pageNo);/* 頁面編號 */
+        request.setAttribute("totalPages", totalPages);/* 總共有幾頁 */
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
         requestDispatcher.forward(request, response);

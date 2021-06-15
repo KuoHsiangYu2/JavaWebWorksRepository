@@ -273,9 +273,9 @@ aside {
 		var viewEmptyData = eval("<jsp:getProperty name='viewStatusData' property='viewEmpty' />");
 		console.log("viewEmptyData -> " + viewEmptyData);
 
-		// 讓分類清單依據當前狀態決定被勾選的選項。
+		/* 讓分類清單依據當前狀態決定被勾選的選項。 */
 		var typeNameData = "${typeName}";
-		typeNameData = window.decodeURI(typeNameData);// 把UTF-8編碼轉回中文字
+		typeNameData = window.decodeURI(typeNameData); /* 把UTF-8編碼轉回中文字 */
 		if ("" === typeNameData) {
 			var targetRadioButton = document.querySelector("aside > input[value='全部']");
 			targetRadioButton.setAttribute("checked", "checked");
@@ -307,29 +307,29 @@ aside {
 				optionText = "第 " + i + " 頁";
 				pageIdObj.add(new Option(optionText, i));
 			}
-			var pageNo = "${pageNo}";// 取得現在第幾頁
-			pageIdObj.value = pageNo;// 設定 focus 下拉選單在第幾頁
+			var pageNo = String("${pageNo}").toString(); /* 取得現在第幾頁 */
+			pageIdObj.value = pageNo; /* 設定 focus 下拉選單在第幾頁 */
 
 			pageIdObj.addEventListener("change", function() {
-				// 當下拉式選單的值變化時，觸發此事件，跳轉到指定的頁面。
+				/* 當下拉式選單的值變化時，觸發此事件，跳轉到指定的頁面。 */
 				// console.log("pageIdObj.addEventListener");
 				// console.log("pageIdObj.value = " + pageIdObj.value);
 				var jumpHref = "${pageContext.request.contextPath}/GetAllPicturePath?pageNo=" + pageIdObj.value + "&typeName=${typeName}&searchString=${searchString}";
 				window.location.href = jumpHref;// 跳轉到指定的頁面。
 			});
 
-			// 以「delete class」名稱來抓取 元素。
+			/* 以「delete class」名稱來抓取 元素。 */
 			var delHrefColl = document.getElementsByClassName("delete");
 			var length = delHrefColl.length;
 			for (var i = 0; i < length; i++) {
 				delHrefColl[i].addEventListener("click", function() {
-					// 彈出確認視窗，詢問使用者是否確定要刪除？
+					/* 彈出確認視窗，詢問使用者是否確定要刪除？ */
 					var isConfirm = confirm("你確定要刪除嗎？");
 					if (false === isConfirm) {
-						// do nothing
+						/* do nothing */
 					} else {
-						// 使用者按下「確定」就發送get請求，
-						// 呼叫後端Servlet執行刪除資料的程式。
+						/* 使用者按下「確定」就發送get請求， */
+						/* 呼叫後端Servlet執行刪除資料的程式。 */
 						var hrefName = this.getAttribute("hrefName");
 						window.location.href = hrefName;
 					}
@@ -340,19 +340,19 @@ aside {
 			var fontCollLength = fontVarSizeColl.length;
 			function initialFontSize() {
 				for (var i = 0; i < fontCollLength; i++) {
-					// 替每個顯示文字設置大小初始值。
+					/* 替每個顯示文字設置大小初始值。 */
 					fontVarSizeColl[i].style.fontSize = "18px";
 				}
 			}
 			initialFontSize();
 
-			// 重設字型大小
+			/* 重設字型大小 */
 			var resetFontObj = document.getElementById("resetFontSize");
 			resetFontObj.addEventListener("click", function() {
 				initialFontSize();
 			});
 
-			// 縮小字型
+			/* 縮小字型 */
 			var decreaseSizeObj = document.getElementById("decreaseFontSize");
 			decreaseSizeObj.addEventListener("click", function() {
 				if (fontVarSizeColl[0].style.fontSize === "") {
@@ -365,7 +365,7 @@ aside {
 				}
 			});
 
-			// 放大字型
+			/* 放大字型 */
 			var increaseSizeObj = document.getElementById("increaseFontSize");
 			increaseSizeObj.addEventListener("click", function() {
 				if (fontVarSizeColl[0].style.fontSize === "") {

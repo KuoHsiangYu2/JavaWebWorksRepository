@@ -39,14 +39,14 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
-            // 取得當前這個作業系統的換行符號
-            // Windows作業系統是 \r \n == CR LF == 13 10
+            /* 取得當前這個作業系統的換行符號 */
+            /* Windows作業系統是 \r \n == CR LF == 13 10 */
             String newLine = System.getProperty("line.separator");
 
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT id, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);// 指定要撈資料的表格名稱
-            sb.append("ORDER BY id ASC" + newLine);// 由小排列到大
+            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
+            sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
             String selectStatementSQL = sb.toString();
             preparedStatement = connection.prepareStatement(selectStatementSQL);
             resultSet = preparedStatement.executeQuery();
@@ -94,7 +94,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
                     e.printStackTrace();
                 }
             }
-        } // end of try-catch-finally
+        } /* end of try-catch-finally */
 
         return classTypeList;
     }
@@ -109,14 +109,13 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
-            // 取得當前這個作業系統的換行符號
-            // Windows作業系統是 \r \n == CR LF == 13 10
+
             String newLine = System.getProperty("line.separator");
 
             StringBuffer sb = new StringBuffer();
             sb.append("SELECT typeName" + newLine);
-            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);// 指定要撈資料的表格名稱
-            sb.append("ORDER BY id ASC" + newLine);// 由小排列到大
+            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
+            sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
             String selectStatementSQL = sb.toString();
             preparedStatement = connection.prepareStatement(selectStatementSQL);
             resultSet = preparedStatement.executeQuery();
@@ -209,7 +208,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
                     e.printStackTrace();
                 }
             }
-        } // end of try-catch-finally
+        } /* end of try-catch-finally */
 
         return exeNum;
     }
@@ -224,7 +223,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             return exeNum;
         }
 
-        // 使用批次處理一口氣寫入大量資料
+        /* 使用批次處理一口氣寫入大量資料 */
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 

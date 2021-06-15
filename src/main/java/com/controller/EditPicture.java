@@ -20,8 +20,8 @@ public class EditPicture extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 當使用者按下[編輯]連結時，先由這隻Servlet進行預處理。
-        // 修改圖片
+        /* 當使用者按下[編輯]連結時，先由這隻Servlet進行預處理。 */
+        /* 修改圖片 */
 
         String backBlockPicture = request.getParameter("backBlockPicture");
 
@@ -65,11 +65,11 @@ public class EditPicture extends HttpServlet {
             System.out.println("資料庫存取失敗。");
         }
 
-        request.setAttribute("pictureTable", pictureTable);// 要修改的那筆資料。
-        request.setAttribute("pageNo", pageNo);// 原本使用者瀏覽的頁數。
-        request.setAttribute("backBlockPicture", backBlockPicture);// 判斷是否要返回[viewAllBlockPicture.jsp]
+        request.setAttribute("pictureTable", pictureTable);/* 要修改的那筆資料。 */
+        request.setAttribute("pageNo", pageNo);/* 原本使用者瀏覽的頁數。 */
+        request.setAttribute("backBlockPicture", backBlockPicture);/* 判斷是否要返回[viewAllBlockPicture.jsp] */
 
-        // 轉往 editPicturePage.jsp 修改頁面。
+        /* 轉往 editPicturePage.jsp 修改頁面。 */
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("editPicturePage.jsp");
         requestDispatcher.forward(request, response);
     }// end of doGet() method

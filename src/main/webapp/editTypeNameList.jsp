@@ -47,24 +47,24 @@ input[readonly="readonly"] {
 		"use strict";
 
 		var showDataObj = document.getElementById("showData");
-		var addRowObj = document.getElementById("addRow");// 新增一列
-		var countRow = 0;// 計算有幾列
-		var editList = [];// 儲存分類清單的陣列
+		var addRowObj = document.getElementById("addRow"); /* 新增一列 */
+		var countRow = 0; /* 計算有幾列 */
+		var editList = []; /* 儲存分類清單的陣列 */
 
 		function initialTable() {
-			// 初始化整個分類清單
+			/* 初始化整個分類清單 */
 			var length = editList.length;
 			for (countRow = 0; countRow < length; countRow++) {
 				var newTrObj = document.createElement("tr");
 
-				// 第1個 td
+				/* 第1個 td */
 				var td1Obj = document.createElement("td");
 				td1Obj.setAttribute("align", "center");
 				td1Obj.setAttribute("class", "no");
 				td1Obj.appendChild(document.createTextNode(String(countRow + 1)));
 				newTrObj.appendChild(td1Obj);
 
-				// 第2個 td
+				/* 第2個 td */
 				var td2Obj = document.createElement("td");
 				td2Obj.setAttribute("width", "160px");
 				var inputObj = document.createElement("input");
@@ -72,18 +72,18 @@ input[readonly="readonly"] {
 				inputObj.setAttribute("name", "typeList");
 				inputObj.setAttribute("value", editList[countRow]);
 				if (countRow === 0) {
-					// 第一列禁止修改編輯
+					/* 第一列禁止修改編輯 */
 					inputObj.setAttribute("readonly", "readonly");
 				} else if (countRow === 1) {
-					// 第二列自動聚焦
+					/* 第二列自動聚焦 */
 					inputObj.setAttribute("autofocus", "autofocus");
 				} else {
-					// do nothing
+					/* do nothing */
 				}
 				td2Obj.appendChild(inputObj);
 				newTrObj.appendChild(td2Obj);
 
-				// 第3個 td
+				/* 第3個 td */
 				var td3Obj = document.createElement("td");
 				var buttonObj = document.createElement("button");
 				buttonObj.setAttribute("type", "button");
@@ -93,7 +93,7 @@ input[readonly="readonly"] {
 				newTrObj.appendChild(td3Obj);
 
 				showDataObj.appendChild(newTrObj);
-				// 從for迴圈出來後 countRow === length ，所以外面不需要再做 countRow++; 的動作。
+				/* 從for迴圈出來後 countRow === length ，所以外面不需要再做 countRow++; 的動作。 */
 			}
 		}
 
@@ -107,16 +107,16 @@ input[readonly="readonly"] {
 				}
 
 				for (var i = 1; i <= 3; i++) {
-					// 再加入3個預設的空白。
+					/* 再加入3個預設的空白。 */
 					editList.push("");
 				}
 
-				// 資料都到齊了，就可以開始初始化繪製表格。
+				/* 資料都到齊了，可以開始初始化繪製表格。 */
 				initialTable();
 			}
 		}
-		xmlHttpObj.open("get", "GetTypeNameList", true);// 第三個參數設定 true，代表開啟非同步模式。
-		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");// 禁止瀏覽器快取
+		xmlHttpObj.open("get", "GetTypeNameList", true); /* 第三個參數設定 true，代表開啟非同步模式。 */
+		xmlHttpObj.setRequestHeader("If-Modified-Since", "0"); /* 禁止瀏覽器快取 */
 		xmlHttpObj.send();
 
 		function renameTdNo() {
@@ -124,7 +124,7 @@ input[readonly="readonly"] {
 			var length = tdNoArray.length;
 			var n = 1;
 			for (var i = 0; i < length; i++) {
-				tdNoArray[i].innerText = String(n);
+				tdNoArray[i].innerText = String(n).toString();
 				n = n + 1;
 			}
 		}
@@ -133,15 +133,15 @@ input[readonly="readonly"] {
 			var isDelete = confirm("確定要刪除嗎？");
 			if (true === isDelete) {
 				if (countRow === 1) {
-					// 只剩一列就不要再刪了。
+					/* 只剩一列就不要再刪了。 */
 					window.alert("分類名單不可為空！");
 					return;
 				}
 				var trObj = buttonObj.parentElement.parentElement;
 				var td1NoObj = trObj.childNodes[0];
 				if (td1NoObj.childNodes[0].nodeValue === "1") {
-					// 檢查是否為第一列的程式
-					// 第一列 [未分類] 禁止使用者刪除
+					/* 檢查是否為第一列的程式 */
+					/* 第一列 [未分類] 禁止使用者刪除 */
 					window.alert("[未分類] 為不可刪除項目！");
 					return;
 				}
@@ -152,7 +152,7 @@ input[readonly="readonly"] {
 				renameTdNo();
 				countRow = countRow - 1;
 			} else {
-				// do nothing
+				/* do nothing */
 			}
 		}
 
@@ -161,14 +161,14 @@ input[readonly="readonly"] {
 
 			var newTrObj = document.createElement("tr");
 
-			// 第1個 td
+			/* 第1個 td */
 			var td1Obj = document.createElement("td");
 			td1Obj.setAttribute("align", "center");
 			td1Obj.setAttribute("class", "no");
 			td1Obj.appendChild(document.createTextNode(String(countRow)));
 			newTrObj.appendChild(td1Obj);
 
-			// 第2個 td
+			/* 第2個 td */
 			var td2Obj = document.createElement("td");
 			td2Obj.setAttribute("width", "160px");
 			var inputObj = document.createElement("input");
@@ -178,7 +178,7 @@ input[readonly="readonly"] {
 			td2Obj.appendChild(inputObj);
 			newTrObj.appendChild(td2Obj);
 
-			// 第3個 td
+			/* 第3個 td */
 			var td3Obj = document.createElement("td");
 			var buttonObj = document.createElement("button");
 			buttonObj.setAttribute("type", "button");

@@ -22,7 +22,7 @@ JavaWebDatabaseTwo專案 應用到的技術有：Java、JSP、Servlet、JDBC、A
 接著創建 SavePictureDB1 這個 database，
 切換到 SavePictureDB1 database。
 
-1.
+2.
 打開 Eclipse project ，
 創建 src\main\resources\ 資料夾，
 接著創建 DatabaseData.txt 檔案
@@ -34,21 +34,21 @@ connectionURL=『資料庫連線URL』
 Example：
 connectionURL=jdbc:sqlserver://localhost:1433;databaseName=SavePictureDB1
 
-2.
+3.
 打開 Eclipse project ，
 打開 src\main\java\__00\intial\InitialTable.java檔，
 滑鼠右鍵「Run As -> 2 Java Application」，執行Java程式建立 PictureTableTwo、ClassTypeTable 2張table。
 
-3.
+4.
 在 Windows電腦 C槽 建立imageData資料夾，
 路徑為 C:\imageData\ 。
 
-4.
+5.
 打開 Tomcat Server 裡面的 server.xml，
 找到 <Host>標籤 ，在 <Host>標籤 裡面加上 <Context docBase="C:/imageData/" path="imageData" reloadable="true"/> ，
 去設定 "C:\imageData\"硬碟實體路徑 對應的 URL 。
 
-5.
+6.
 打開 Eclipse project ，
 創建 src\main\webapp\META-INF\ 資料夾，
 接著在這層資料夾新增 context.xml檔案，

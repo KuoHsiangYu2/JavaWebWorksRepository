@@ -71,8 +71,8 @@
 		// https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/287049/
 
 		var showPicturesObj = document.getElementById("showPictures");
-		var picList = [];// 圖片名稱清單
-		var picId = [];// 圖片id編號
+		var picList = []; /* 圖片名稱清單 */
+		var picId = []; /* 圖片id編號 */
 
 		function clickImg(img) {
 			var jumpHref = img.getAttribute("jumpHref");
@@ -115,10 +115,10 @@
 		// https://kknews.cc/zh-tw/news/k8o5arb.html
 		// https://medium.com/%E4%B8%80%E5%80%8B%E4%BA%BA%E7%9A%84%E6%96%87%E8%97%9D%E5%BE%A9%E8%88%88/%E8%AE%93%E7%80%8F%E8%A6%BD%E5%99%A8%E8%87%AA%E5%8B%95%E6%BB%BE%E7%B6%B2%E9%A0%81-javascript-4a8c24f94f04
 
-		var winObj = $(window);
-		var backToTopObj = $(".js-back-to-top");
+		var winObj = jQuery(window);
+		var backToTopObj = jQuery('.js-back-to-top');
 
-		// 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
+		/* 當用戶滾動到離頂部100像素時，展示回到頂部按鈕 */
 		winObj.scroll(function() {
 			if (winObj.scrollTop() > 100) {
 				backToTopObj.show();
@@ -127,10 +127,10 @@
 			}
 		});
 
-		// 當用戶點擊按鈕時，通過動畫效果返回頭部
+		/* 當用戶點擊按鈕時，通過動畫效果返回頭部 */
 		backToTopObj.click(function() {
-			$("html, body").animate({
-				scrollTop : 0
+			jQuery("html, body").animate({
+				scrollTop: 0
 			}, 200);
 		});
 	</script>

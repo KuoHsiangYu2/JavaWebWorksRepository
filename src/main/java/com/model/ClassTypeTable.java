@@ -2,12 +2,12 @@ package com.model;
 
 import java.io.Serializable;
 
-// 儲存分類資料
+/* 儲存分類資料 */
 public class ClassTypeTable implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id; // primary key 主鍵
-    private String typeName; // 圖片分類標籤
+    private Integer id; /* primary key 主鍵 */
+    private String typeName; /* 圖片分類標籤 */
 
     public ClassTypeTable() {
         super();

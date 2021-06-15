@@ -118,7 +118,7 @@ fieldset {
 				}
 			}
 		}
-		xmlHttpObj.open("get", "GetTypeNameList", true);// 第三個參數設定 true，代表開啟非同步模式。
+		xmlHttpObj.open("get", "GetTypeNameList", true);
 		xmlHttpObj.setRequestHeader("If-Modified-Since", "0");
 		xmlHttpObj.send();
 
@@ -139,9 +139,8 @@ fieldset {
 		var pictureName = "";
 
 		file2Obj.addEventListener("change", function() {
-			// print("file2Obj.addEventListener");
-			// 當使用者上傳圖片檔案時，
-			// 把圖片讀進來，顯示在預覽上。
+			/* 當使用者上傳圖片檔案時， */
+			/* 把圖片讀進來，顯示在預覽上。 */
 			if (this.files && this.files[0]) {
 				var fileReader = new FileReader();
 				fileReader.onload = function(e) {
@@ -160,18 +159,18 @@ fieldset {
 		var resetObj = document.getElementById("reset");
 		var titleObj = document.getElementById("title");
 		resetObj.addEventListener("click", function() {
-			// 當 reset按鈕 被按下時觸發此事件，
-			// 清空欄位，並且讓瀏覽器再發送一次請求重新整理頁面。
+			/* 當 reset按鈕 被按下時觸發此事件， */
+			/* 清空欄位，並且讓瀏覽器再發送一次請求重新整理頁面。 */
 			previewImgObj.removeAttribute("src");
 			previewImgObj.setAttribute("width", "0px");
 			pictureName = "";
 			titleObj.setAttribute("value", "");
-			//history.go(0);// 重新刷新頁面
-			window.location.href = "${pageContext.request.contextPath}/uploadFile.jsp";// 重新刷新頁面
+			// history.go(0); /* 重新刷新頁面 */
+			window.location.href = "${pageContext.request.contextPath}/uploadFile.jsp"; /* 重新刷新頁面 */
 		});
 
-		// 這段程式取出圖片檔名，把[.] 跟 [副檔名] 去除掉，
-		// 接著把修改過的檔名填入標題欄位。
+		/* 這段程式取出圖片檔名，把[.] 跟 [副檔名] 去除掉， */
+		/* 接著把修改過的檔名填入標題欄位。 */
 		var fillTitleNameObj = document.getElementById("fillTitleName");
 		fillTitleNameObj.addEventListener("click", function() {
 			console.log("fillTitleNameObj has been click.");
@@ -179,7 +178,7 @@ fieldset {
 			var pointIndex = fileName.lastIndexOf(".");
 			console.log("pointIndex");
 			console.log(pointIndex);
-			fileName = fileName.substring(0, pointIndex);// 把 [.] 跟 [副檔名] 去除掉。
+			fileName = fileName.substring(0, pointIndex); /* 把 [.] 跟 [副檔名] 去除掉。 */
 			console.log("fileName = [" + fileName + "]");
 			titleObj.setAttribute("value", fileName);
 			titleObj.value = fileName;// IE

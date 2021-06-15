@@ -19,7 +19,7 @@ public class GetPictureCount extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 回傳總共有幾筆資料
+        /* 回傳總共有幾筆資料 */
         IPictureTableDao pictureDao = new PictureTableMSSQLDao();
         int result = 0;
         try {

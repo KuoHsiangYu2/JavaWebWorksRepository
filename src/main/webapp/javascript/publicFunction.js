@@ -60,7 +60,7 @@ if (!String.prototype.padStart) {
 }
 
 if (!Array.prototype.find) {
-    /* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find */
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
     /* for support Internet Explorer browser */
     Object.defineProperty(Array.prototype, 'find', {
         value: function (predicate) {

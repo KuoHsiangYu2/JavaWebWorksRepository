@@ -55,22 +55,22 @@ public class GetAllPicturePath extends HttpServlet {
 
         try {
             if (searchString != null && searchString.trim().length() != 0) {
-                // 進入查詢模式
-                // 依使用者的搜尋字把資料取出來
-                request.setAttribute("searchString", searchString);// 搜尋字串
-                request.setAttribute("typeName", null);// 分類
+                /* 進入查詢模式 */
+                /* 依使用者的搜尋字把資料取出來 */
+                request.setAttribute("searchString", searchString);/* 搜尋字串 */
+                request.setAttribute("typeName", null);/* 分類 */
                 pictureTableList = pictureDao.getPagePicture(pageNo, searchString, PictureTableSearchType.searchString);
                 totalPages = pictureDao.getTotalPages(searchString, PictureTableSearchType.searchString);
             } else if (typeName != null && typeName.trim().length() != 0 && !typeName.equals("全部")) {
-                // 依據圖片分類來撈資料
-                request.setAttribute("searchString", null);// 搜尋字串
-                request.setAttribute("typeName", typeName);// 分類
+                /* 依據圖片分類來撈資料 */
+                request.setAttribute("searchString", null);/* 搜尋字串 */
+                request.setAttribute("typeName", typeName);/* 分類 */
                 pictureTableList = pictureDao.getPagePicture(pageNo, typeName, PictureTableSearchType.typeName);
                 totalPages = pictureDao.getTotalPages(typeName, PictureTableSearchType.typeName);
             } else {
-                // 撈出全部資料。
-                request.setAttribute("searchString", null);// 搜尋字串
-                request.setAttribute("typeName", null);// 分類
+                /* 撈出全部資料。 */
+                request.setAttribute("searchString", null);/* 搜尋字串 */
+                request.setAttribute("typeName", null);/* 分類 */
 
                 pictureTableList = pictureDao.getPagePicture(pageNo);
                 totalPages = pictureDao.getTotalPages();
@@ -83,14 +83,14 @@ public class GetAllPicturePath extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
-        request.setAttribute("classTypeList", classTypeList);// 分類清單
-        request.setAttribute("pictureTableList", pictureTableList);// 一頁五筆的圖片清單
-        request.setAttribute("pageNo", pageNo);// 頁面編號
-        request.setAttribute("totalPages", totalPages);// 總共有幾頁
+        request.setAttribute("classTypeList", classTypeList);/* 分類清單 */
+        request.setAttribute("pictureTableList", pictureTableList);/* 一頁五筆的圖片清單 */
+        request.setAttribute("pageNo", pageNo);/* 頁面編號 */
+        request.setAttribute("totalPages", totalPages);/* 總共有幾頁 */
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
         requestDispatcher.forward(request, response);
         // System.out.println("request.getContextPath() : " + request.getContextPath());
         // response.sendRedirect(request.getContextPath() + "/viewAllPicture.jsp");
-    }// end of doGet() method
+    }/* end of doGet() method */
 }

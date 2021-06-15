@@ -2,14 +2,14 @@ package com.model;
 
 import java.io.Serializable;
 
-// 儲存圖片相關資料
+/* 儲存圖片相關資料 */
 public class PictureTableTwo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id; // primary key 主鍵
-    private String title; // 圖片標題
-    private String pictureName; // 圖片檔案名稱
-    private String typeName; // 圖片分類
+    private Integer id; /* primary key 主鍵 */
+    private String title; /* 圖片標題 */
+    private String pictureName; /* 圖片檔案名稱 */
+    private String typeName; /* 圖片分類 */
 
     public PictureTableTwo() {
         super();

@@ -37,7 +37,7 @@ public class GetPictureFile extends HttpServlet {
         // System.out.println("indexStr = " + indexStr);
 
         if (indexStr == null) {
-            // 如果沒有 query string 就結束這段程式。
+            /* 如果沒有 query string 就結束這段程式。 */
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
             requestDispatcher.forward(request, response);
             return;
@@ -47,7 +47,7 @@ public class GetPictureFile extends HttpServlet {
             index = Integer.parseInt(indexStr);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            // 如果不是合法數字就結束這段程式。
+            /* 如果不是合法數字就結束這段程式。 */
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
             requestDispatcher.forward(request, response);
             return;
@@ -57,7 +57,7 @@ public class GetPictureFile extends HttpServlet {
         PictureTableTwo pictureTable = pictureDao.getFullPictureDataById(index);
 
         if (pictureTable == null) {
-            // 查無資料，結束程式。
+            /* 查無資料，結束程式。 */
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
             requestDispatcher.forward(request, response);
             return;
@@ -87,28 +87,28 @@ public class GetPictureFile extends HttpServlet {
 
         InputStream inputStream = null;
         long fileLength = 0L;
-        // Java IO 從硬碟把圖片檔案讀取出來。
+        /* Java IO 從硬碟把圖片檔案讀取出來。 */
         File imageFile = new File("C:/imageData/" + pictureName);
         inputStream = new FileInputStream(imageFile);
         fileLength = imageFile.length();
 
-        // 去除掉時間戳記，還原成原始的檔案名稱。
+        /* 去除掉時間戳記，還原成原始的檔案名稱。 */
         pictureName = GlobalService.revertFileName(pictureName);
 
         if (false == isInternetExplorer) {
-            // Google, Firefox, Opera瀏覽器
+            /* Google, Firefox, Opera瀏覽器 */
             pictureName = new String(pictureName.getBytes(), "ISO8859-1");
         } else {
-            // Internet Explorer, Microsoft Edge瀏覽器
+            /* Internet Explorer, 舊版Microsoft Edge瀏覽器 */
             pictureName = URLEncoder.encode(pictureName, "UTF-8");
             pictureName = pictureName.replace("+", "%20");
         }
 
         System.out.println("2 pictureName -> " + pictureName);
 
-        // 清空response
+        /* 清空response */
         response.reset();
-        // 設定response的Header
+        /* 設定response的Header */
         /* FireFox瀏覽器 必須在 fileName前後加上 \" 才能避免瀏覽器擷取到空格就停止擷取檔案名稱。 */
         response.addHeader("Content-Disposition", "attachment;filename=\"" + pictureName + "\"");
         response.addHeader("Content-Length", String.valueOf(fileLength));
@@ -132,5 +132,5 @@ public class GetPictureFile extends HttpServlet {
                 inputStream = null;
             }
         }
-    }// end of doGet() method
+    }/* end of doGet() method */
 }

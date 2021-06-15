@@ -26,10 +26,10 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         IPictureTableDao pictureTableDao = new PictureTableMSSQLDao();
 
-        // 從資料庫撈出 <圖片分類> 清單
+        /* 從資料庫撈出 <圖片分類> 清單 */
         List<String> oldClassTypeList = classTypeDao.getClassTypeStringList();
 
-        // 使用者傳進來的 <圖片分類> 清單
+        /* 使用者傳進來的 <圖片分類> 清單 */
         List<String> newClassTypeList = new ArrayList<String>();
 
         String[] typeList = request.getParameterValues("typeList");
@@ -49,25 +49,25 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
         }
 
         if (true == oldClassTypeList.equals(newClassTypeList)) {
-            // 資料庫舊清單 與 使用者修改的清單一模一樣，不需要再改資料庫資料。
-            // 返回首頁。
+            /* 資料庫舊清單 與 使用者修改的清單一模一樣，不需要再改資料庫資料。 */
+            /* 返回首頁。 */
             System.out.println("old equals new == true");
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         } else {
             System.out.println("old equals new == false");
 
-            // 先刪除 ClassTypeTable 裡的所有資料
+            /* 先刪除 ClassTypeTable 裡的所有資料 */
             classTypeDao.deleteAll();
 
-            // 接著插入新的分類資料
+            /* 接著插入新的分類資料 */
             classTypeDao.insertAll(newClassTypeList);
 
-            // 然後取出所有圖片資料裡的分類進行比對
+            /* 然後取出所有圖片資料裡的分類進行比對 */
             List<PictureTableTwo> pictureTable = pictureTableDao.getAllPicture();
             if (pictureTable.size() == 0) {
-                // 如果圖片庫目前沒資料，就先回去主畫面。
-                // 後面的操作可以省略。
+                /* 如果圖片庫目前沒資料，就先回去主畫面。 */
+                /* 後面的操作可以省略。 */
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             }
@@ -79,8 +79,8 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
             for (int i = 0; i < length2; i++) {
                 typeName = pictureTable.get(i).getTypeName();
                 if (false == newClassTypeList.contains(typeName)) {
-                    // 如果圖片裡的分類項目沒有包含在 新版的分類項目名單裡的話。
-                    // 進行記錄
+                    /* 如果圖片裡的分類項目沒有包含在 新版的分類項目名單裡的話。 */
+                    /* 進行記錄 */
                     PictureTableTwo ptObj = new PictureTableTwo();
                     ptObj.setId(pictureTable.get(i).getId());// 設定id值
                     updateTypeNameList.add(ptObj);
@@ -88,12 +88,12 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
                 }
             }
 
-            // 把戳記的圖片分類資料重新改成 [未分類]
+            /* 把戳記的圖片分類資料重新改成 [未分類] */
             pictureTableDao.resetTypeNameList(updateTypeNameList);
 
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         }
 
-    }// end of doPost() method
+    }/* end of doPost() method */
 }
