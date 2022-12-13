@@ -22,7 +22,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
     private DataSource dataSource = null;
     private int pageNo = 1; /* 存放目前顯示頁面的編號 */
     private int recordsPerPage = 5; /* 預設值：每頁5筆 */
-    private int totalPages = 1;/* 總頁數 */
+    private int totalPages = 1; /* 總頁數 */
 
     public PictureTableMSSQLDao() {
         super();
@@ -145,7 +145,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             String newLine = System.getProperty("line.separator");
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, title, pictureName, typeName" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
             sb.append("ORDER BY id ASC" + newLine);/* 用 id 來排序 */
@@ -167,7 +167,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
@@ -229,7 +229,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, title, pictureName, typeName" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
             String selectStatementSQL = sb.toString();
@@ -239,7 +239,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
@@ -301,14 +301,14 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT COUNT(id) AS 'number'" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
             String getCountSQL = sb.toString();
             preparedStatement = connection.prepareStatement(getCountSQL);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 result = resultSet.getInt("number");
             }
         } catch (SQLException e) {
@@ -363,7 +363,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, title, pictureName, typeName" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("WHERE id = ?" + newLine);
@@ -372,7 +372,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setInt(1, index);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
@@ -459,7 +459,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         PreparedStatement preparedStatement = null;
 
         String newLine = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("UPDATE SavePictureDB1..PictureTableTwo" + newLine);
         sb.append("SET title = ?, pictureName = ?, typeName = ?" + newLine);
         sb.append("WHERE id = ?" + newLine);
@@ -519,7 +519,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         PreparedStatement preparedStatement = null;
 
         String newLine = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM SavePictureDB1..PictureTableTwo" + newLine);
         sb.append("WHERE id = ?" + newLine);
         String deleteStatementSQL = sb.toString();
@@ -581,7 +581,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("UPDATE SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("SET typeName = '未分類'" + newLine);
             sb.append("WHERE id = ?" + newLine);
@@ -589,7 +589,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             preparedStatement = connection.prepareStatement(updateStatementSQL);
             int length = updateTypeNameList.size();
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < length; ++i) {
                 exeNum = exeNum + 1;
                 preparedStatement.setInt(1, updateTypeNameList.get(i).getId());
                 preparedStatement.addBatch();/* 使用批次處理一口氣寫入大量資料 */
@@ -635,10 +635,9 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         } else if (type == PictureTableSearchType.typeName) {
             /* 依據圖片分類來回傳值 */
             return getPagePictureType(pageNo, targetString);
-        } else {
-            /* 程式正常執行時，不應該執行到這段else */
-            return null;
         }
+        /* 程式正常執行時，不應該執行到這段else */
+        return null;
     }
 
     private List<PictureTableTwo> getPagePictureType(int pageNo, String typeString) {
@@ -673,7 +672,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             String newLine = System.getProperty("line.separator");
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, title, pictureName, typeName" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
             sb.append("WHERE typeName = ?" + newLine);
@@ -697,7 +696,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
@@ -777,7 +776,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             String newLine = System.getProperty("line.separator");
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, title, pictureName, typeName" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
             sb.append("WHERE title LIKE ?" + newLine);
@@ -801,7 +800,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
@@ -859,10 +858,9 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             /* 依據圖片分類來回傳值 */
             /* 回傳分類圖片總頁數 */
             return getTotalPagesType(targetString);
-        } else {
-            /* 程式正常執行，絕對不應該執行到這段。 */
-            return -1;
         }
+        /* 程式正常執行，絕對不應該執行到這段。 */
+        return -1;
     }
 
     private int getTotalPagesType(String typeString) {
@@ -880,7 +878,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT COUNT(id) AS 'number'" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("WHERE typeName = ?" + newLine);
@@ -890,7 +888,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setString(1, typeString);
             resultSet = preparedStatement.executeQuery();
             connection.commit();
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 totalCount = resultSet.getInt("number");
             }
         } catch (SQLException e) {
@@ -948,7 +946,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection.setAutoCommit(false);
 
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT COUNT(id) AS 'number'" + newLine);
             sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("WHERE title LIKE ?" + newLine);
@@ -958,7 +956,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setString(1, "%" + searchString + "%");
             resultSet = preparedStatement.executeQuery();
             connection.commit();
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 totalCount = resultSet.getInt("number");
             }
         } catch (SQLException e) {

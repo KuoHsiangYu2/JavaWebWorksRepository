@@ -43,7 +43,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             /* Windows作業系統是 \r \n == CR LF == 13 10 */
             String newLine = System.getProperty("line.separator");
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT id, typeName" + newLine);
             sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
             sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
@@ -53,7 +53,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             connection.commit();
 
             ClassTypeTable classTypeTable = null;
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 classTypeTable = new ClassTypeTable();
                 classTypeTable.setId(resultSet.getInt("id"));
                 classTypeTable.setTypeName(resultSet.getString("typeName"));
@@ -112,7 +112,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
 
             String newLine = System.getProperty("line.separator");
 
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("SELECT typeName" + newLine);
             sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
             sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
@@ -121,7 +121,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             resultSet = preparedStatement.executeQuery();
             connection.commit();
 
-            while (true == resultSet.next()) {
+            while (resultSet.next()) {
                 classTypeStringList.add(resultSet.getString("typeName"));
             }
         } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
         PreparedStatement preparedStatement = null;
 
         String newLine = System.getProperty("line.separator");
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM SavePictureDB1..ClassTypeTable" + newLine);
 
         String deleteStatementSQL = sb.toString();
