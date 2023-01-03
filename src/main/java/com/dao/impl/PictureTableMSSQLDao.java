@@ -11,7 +11,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.sql.rowset.serial.SerialException;
 
 import com.dao.IPictureTableDao;
 import com.model.PictureTableSearchType;
@@ -20,6 +19,7 @@ import com.model.PictureTableTwo;
 public class PictureTableMSSQLDao implements IPictureTableDao {
 
     private DataSource dataSource = null;
+    private final static String newLine = System.getProperty("line.separator");
     private int pageNo = 1; /* 存放目前顯示頁面的編號 */
     private int recordsPerPage = 5; /* 預設值：每頁5筆 */
     private int totalPages = 1; /* 總頁數 */
@@ -74,7 +74,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         try {
             connection = dataSource.getConnection();
-
             connection.setAutoCommit(false);
 
             String insertStatementSQL = "INSERT INTO SavePictureDB1..PictureTableTwo(title, pictureName, typeName) VALUES(?, ?, ?)";
@@ -84,17 +83,13 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setString(3, pictureTable.getTypeName());
             exeNum = preparedStatement.executeUpdate();
             connection.commit();
-            // System.out.println("exeNum = " + exeNum);
-            // System.out.println("insert picture data successful");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Transaction is being rolled back");
             try {
                 connection.rollback();
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -113,7 +108,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
                     e.printStackTrace();
                 }
             }
-        } /* end of try-catch-finally */
+        }
 
         return exeNum;
     }
@@ -136,23 +131,16 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         List<PictureTableTwo> pictureTableList = new ArrayList<PictureTableTwo>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, title, pictureName, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
+        sb.append("ORDER BY id ASC" + newLine);/* 用 id 來排序 */
+        sb.append("OFFSET ? ROW" + newLine);/* 省略幾?筆資料 */
+        sb.append("FETCH NEXT ? ROWS ONLY" + newLine);/* 往後多加?筆資料 */
+        String selectStatementSQL = sb.toString();
 
-            String newLine = System.getProperty("line.separator");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, title, pictureName, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
-            sb.append("ORDER BY id ASC" + newLine);/* 用 id 來排序 */
-            sb.append("OFFSET ? ROW" + newLine);/* 省略幾?筆資料 */
-            sb.append("FETCH NEXT ? ROWS ONLY" + newLine);/* 往後多加?筆資料 */
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
 
             /* startRecordNo 起始略過的資料筆數 */
             /* pageNo 目前的頁數 */
@@ -162,8 +150,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setInt(1, startRecordNo);
             preparedStatement.setInt(2, recordsPerPage);
 
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
@@ -178,39 +165,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
+        }
 
         return pictureTableList;
     }
@@ -220,22 +175,13 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         /* 取得所有的資料。 */
         List<PictureTableTwo> pictureTableList = new ArrayList<PictureTableTwo>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, title, pictureName, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, title, pictureName, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
@@ -250,39 +196,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
+        }
 
         return pictureTableList;
     }
@@ -292,60 +206,19 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         /* 取得資料庫裡面圖片資料的筆數 */
         int result = 0;
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT COUNT(id) AS 'number'" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
-            String getCountSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(getCountSQL);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT COUNT(id) AS 'number'" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+        String getCountSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(getCountSQL);) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 result = resultSet.getInt("number");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
+        }
 
         return result;
     }
@@ -354,75 +227,25 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
     public PictureTableTwo getFullPictureDataById(int index) {
         /* 取得單一筆資料的所有欄位。 */
         PictureTableTwo pictureTable = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, title, pictureName, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
-            sb.append("WHERE id = ?" + newLine);
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, title, pictureName, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+        sb.append("WHERE id = ?" + newLine);
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
             preparedStatement.setInt(1, index);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 pictureTable = new PictureTableTwo();
                 pictureTable.setId(resultSet.getInt("id"));
                 pictureTable.setTitle(resultSet.getString("title"));
                 pictureTable.setPictureName(resultSet.getString("pictureName"));
                 pictureTable.setTypeName(resultSet.getString("typeName"));
-            } /* end of while-loop */
-        } catch (SerialException e) {
-            e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
-
+        }
         return pictureTable;
     }
 
@@ -458,7 +281,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        String newLine = System.getProperty("line.separator");
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE SavePictureDB1..PictureTableTwo" + newLine);
         sb.append("SET title = ?, pictureName = ?, typeName = ?" + newLine);
@@ -482,7 +304,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -501,7 +322,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
                     e.printStackTrace();
                 }
             }
-        } /* end of try-catch-finally */
+        }
 
         return exeNum;
     }
@@ -518,7 +339,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        String newLine = System.getProperty("line.separator");
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM SavePictureDB1..PictureTableTwo" + newLine);
         sb.append("WHERE id = ?" + newLine);
@@ -538,7 +358,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -557,7 +376,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
                     e.printStackTrace();
                 }
             }
-        } /* end of try-catch-finally */
+        }
 
         return exeNum;
     }
@@ -580,7 +399,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             connection = dataSource.getConnection();
             connection.setAutoCommit(false);
 
-            String newLine = System.getProperty("line.separator");
             StringBuilder sb = new StringBuilder();
             sb.append("UPDATE SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("SET typeName = '未分類'" + newLine);
@@ -590,7 +408,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement = connection.prepareStatement(updateStatementSQL);
             int length = updateTypeNameList.size();
             for (int i = 0; i < length; ++i) {
-                exeNum = exeNum + 1;
+                ++exeNum;
                 preparedStatement.setInt(1, updateTypeNameList.get(i).getId());
                 preparedStatement.addBatch();/* 使用批次處理一口氣寫入大量資料 */
             }
@@ -603,7 +421,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -652,7 +469,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             /* 不合法的頁數編號就停止程式。 */
             return new ArrayList<PictureTableTwo>();
         }
-
         if (typeString == null || typeString.trim().length() == 0) {
             /* 沒有圖片分類字串，直接回傳空集合。 */
             return new ArrayList<PictureTableTwo>();
@@ -663,24 +479,16 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         List<PictureTableTwo> pictureTableList = new ArrayList<PictureTableTwo>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, title, pictureName, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
-            sb.append("WHERE typeName = ?" + newLine);
-            sb.append("ORDER BY id ASC" + newLine);/* 用 id 來排序，ASC：小排到大 */
-            sb.append("OFFSET ? ROW" + newLine);/* 省略幾?筆資料 */
-            sb.append("FETCH NEXT ? ROWS ONLY" + newLine);/* 往後多加?筆資料 */
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, title, pictureName, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine); /* 指定要撈資料的表格名稱 */
+        sb.append("WHERE typeName = ?" + newLine);
+        sb.append("ORDER BY id ASC" + newLine); /* 用 id 來排序，ASC：小排到大 */
+        sb.append("OFFSET ? ROW" + newLine); /* 省略幾?筆資料 */
+        sb.append("FETCH NEXT ? ROWS ONLY" + newLine); /* 往後多加?筆資料 */
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
 
             /* startRecordNo 起始略過的資料筆數 */
             /* pageNo 目前的頁數 */
@@ -691,8 +499,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setInt(2, startRecordNo);
             preparedStatement.setInt(3, recordsPerPage);
 
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
@@ -707,40 +514,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
-
+        }
         return pictureTableList;
     }
 
@@ -756,7 +530,6 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             /* 不合法的頁數編號就停止程式。 */
             return new ArrayList<PictureTableTwo>();
         }
-
         if (searchString == null || searchString.trim().length() == 0) {
             /* 沒有輸入搜索字串，直接回傳空集合。 */
             return new ArrayList<PictureTableTwo>();
@@ -767,25 +540,16 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         List<PictureTableTwo> pictureTableList = new ArrayList<PictureTableTwo>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, title, pictureName, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);/* 指定要撈資料的表格名稱 */
-            sb.append("WHERE title LIKE ?" + newLine);
-            sb.append("ORDER BY id ASC" + newLine);/* 用 id 來排序，ASC：小排到大 */
-            sb.append("OFFSET ? ROW" + newLine);/* 省略幾?筆資料 */
-            sb.append("FETCH NEXT ? ROWS ONLY" + newLine);/* 往後多加?筆資料 */
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
-
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, title, pictureName, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine); /* 指定要撈資料的表格名稱 */
+        sb.append("WHERE title LIKE ?" + newLine);
+        sb.append("ORDER BY id ASC" + newLine); /* 用 id 來排序，ASC：小排到大 */
+        sb.append("OFFSET ? ROW" + newLine); /* 省略幾?筆資料 */
+        sb.append("FETCH NEXT ? ROWS ONLY" + newLine); /* 往後多加?筆資料 */
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
             /* startRecordNo 起始略過的資料筆數 */
             /* pageNo 目前的頁數 */
             /* recordsPerPage 每頁有幾筆資料 */
@@ -795,8 +559,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             preparedStatement.setInt(2, startRecordNo);
             preparedStatement.setInt(3, recordsPerPage);
 
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             PictureTableTwo pictureTable = null;
             /* 把圖片的清單依依加進去，包含 Primary Key主鍵[id]，以及圖片標題[title] */
@@ -811,39 +574,7 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
+        }
 
         return pictureTableList;
     }
@@ -869,63 +600,21 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         int totalCount = 0;
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT COUNT(id) AS 'number'" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
-            sb.append("WHERE typeName = ?" + newLine);
-            String getCountSQL = sb.toString();
-
-            preparedStatement = connection.prepareStatement(getCountSQL);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT COUNT(id) AS 'number'" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+        sb.append("WHERE typeName = ?" + newLine);
+        String getCountSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(getCountSQL);) {
             preparedStatement.setString(1, typeString);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 totalCount = resultSet.getInt("number");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
+        }
 
         int totalPages = (int) (Math.ceil((double) totalCount / (double) recordsPerPage));
         return totalPages;
@@ -937,64 +626,22 @@ public class PictureTableMSSQLDao implements IPictureTableDao {
 
         int totalCount = 0;
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT COUNT(id) AS 'number'" + newLine);
-            sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
-            sb.append("WHERE title LIKE ?" + newLine);
-            String getCountSQL = sb.toString();
-
-            preparedStatement = connection.prepareStatement(getCountSQL);
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT COUNT(id) AS 'number'" + newLine);
+        sb.append("FROM SavePictureDB1..PictureTableTwo" + newLine);
+        sb.append("WHERE title LIKE ?" + newLine);
+        String getCountSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(getCountSQL);) {
             preparedStatement.setString(1, "%" + searchString + "%");
-            resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             connection.commit();
             while (resultSet.next()) {
                 totalCount = resultSet.getInt("number");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
-
+        }
         int totalPages = (int) (Math.ceil((double) totalCount / (double) recordsPerPage));
         return totalPages;
     }

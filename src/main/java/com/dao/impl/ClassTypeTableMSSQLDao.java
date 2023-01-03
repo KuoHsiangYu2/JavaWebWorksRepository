@@ -17,6 +17,7 @@ import com.model.ClassTypeTable;
 
 public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
     private DataSource dataSource = null;
+    private final static String newLine = System.getProperty("line.separator");
 
     public ClassTypeTableMSSQLDao() {
         super();
@@ -33,25 +34,15 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
     public List<ClassTypeTable> getClassTypeList() {
         List<ClassTypeTable> classTypeList = new ArrayList<ClassTypeTable>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-            /* 取得當前這個作業系統的換行符號 */
-            /* Windows作業系統是 \r \n == CR LF == 13 10 */
-            String newLine = System.getProperty("line.separator");
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT id, typeName" + newLine);
+        sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine); /* 指定要撈資料的表格名稱 */
+        sb.append("ORDER BY id ASC" + newLine); /* 由小排列到大 */
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT id, typeName" + newLine);
-            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
-            sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-
+            ResultSet resultSet = preparedStatement.executeQuery();
             ClassTypeTable classTypeTable = null;
             while (resultSet.next()) {
                 classTypeTable = new ClassTypeTable();
@@ -62,40 +53,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } /* end of try-catch-finally */
-
+        }
         return classTypeList;
     }
 
@@ -103,63 +61,20 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
     public List<String> getClassTypeStringList() {
         List<String> classTypeStringList = new ArrayList<String>();
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
-            String newLine = System.getProperty("line.separator");
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("SELECT typeName" + newLine);
-            sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine);/* 指定要撈資料的表格名稱 */
-            sb.append("ORDER BY id ASC" + newLine);/* 由小排列到大 */
-            String selectStatementSQL = sb.toString();
-            preparedStatement = connection.prepareStatement(selectStatementSQL);
-            resultSet = preparedStatement.executeQuery();
-            connection.commit();
-
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT typeName" + newLine);
+        sb.append("FROM SavePictureDB1..ClassTypeTable" + newLine); /* 指定要撈資料的表格名稱 */
+        sb.append("ORDER BY id ASC" + newLine); /* 由小排列到大 */
+        String selectStatementSQL = sb.toString();
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(selectStatementSQL);) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 classTypeStringList.add(resultSet.getString("typeName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                    resultSet = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                    preparedStatement = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.setAutoCommit(true);
-                    connection.close();
-                    connection = null;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } // end of try-catch-finally
-
+        }
         return classTypeStringList;
     }
 
@@ -170,7 +85,6 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
-        String newLine = System.getProperty("line.separator");
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM SavePictureDB1..ClassTypeTable" + newLine);
 
@@ -189,7 +103,6 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -208,7 +121,7 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
                     e.printStackTrace();
                 }
             }
-        } /* end of try-catch-finally */
+        }
 
         return exeNum;
     }
@@ -233,8 +146,8 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             String insertStatement = "INSERT INTO ClassTypeTable(typeName) VALUES(?)";
             preparedStatement = connection.prepareStatement(insertStatement);
             int length = classTypeList.size();
-            for (int i = 0; i < length; i++) {
-                exeNum++;
+            for (int i = 0; i < length; ++i) {
+                ++exeNum;
                 preparedStatement.setString(1, classTypeList.get(i));
                 preparedStatement.addBatch();
             }
@@ -247,7 +160,6 @@ public class ClassTypeTableMSSQLDao implements IClassTypeTableDao {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-            throw new RuntimeException(e);
         } finally {
             if (preparedStatement != null) {
                 try {

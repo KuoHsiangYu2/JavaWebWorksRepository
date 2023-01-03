@@ -6,8 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -48,7 +48,7 @@ public class SavePicture extends HttpServlet {
         /* 取出HTTP multipart request內所有的parts */
 
         /* 準備存放錯誤訊息的Map物件 */
-        Map<String, String> errorMsg = new HashMap<String, String>();
+        Map<String, String> errorMsg = new LinkedHashMap<String, String>();
 
         request.setAttribute("errorMsg", errorMsg);
 

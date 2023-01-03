@@ -34,21 +34,20 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
 
         String[] typeList = request.getParameterValues("typeList");
         int length = typeList.length;
-
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; ++i) {
             if (typeList[i] != null && typeList[i].trim().length() != 0) {
                 newClassTypeList.add(typeList[i]);
             }
         }
 
         System.out.println("newClassTypeList.get(0) : " + newClassTypeList.get(0));
-        if (false == newClassTypeList.get(0).equals("未分類")) {
+        if (!newClassTypeList.get(0).equals("\u672A\u5206\u985E")) {
             System.out.println("error [未分類]欄位 必須存在");
             response.sendRedirect(request.getContextPath() + "/editTypeNameList.jsp");
             return;
         }
 
-        if (true == oldClassTypeList.equals(newClassTypeList)) {
+        if (oldClassTypeList.equals(newClassTypeList)) {
             /* 資料庫舊清單 與 使用者修改的清單一模一樣，不需要再改資料庫資料。 */
             /* 返回首頁。 */
             System.out.println("old equals new == true");
@@ -76,9 +75,9 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
 
             int length2 = pictureTable.size();
             String typeName = "";
-            for (int i = 0; i < length2; i++) {
+            for (int i = 0; i < length2; ++i) {
                 typeName = pictureTable.get(i).getTypeName();
-                if (false == newClassTypeList.contains(typeName)) {
+                if (!newClassTypeList.contains(typeName)) {
                     /* 如果圖片裡的分類項目沒有包含在 新版的分類項目名單裡的話。 */
                     /* 進行記錄 */
                     PictureTableTwo ptObj = new PictureTableTwo();
@@ -95,5 +94,5 @@ public class SaveAndUpdateEditTypeList extends HttpServlet {
             return;
         }
 
-    }/* end of doPost() method */
+    }
 }

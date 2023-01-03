@@ -73,8 +73,6 @@ public class EditPictureAndSave extends HttpServlet {
                         typeName = value;
                     } else if (partName.equals("backBlockPicture")) {
                         backBlockPicture = value;
-                    } else {
-                        /* do nothing */
                     }
                 } else {
                     pictureName = GlobalService.getFileName(part);
@@ -123,7 +121,7 @@ public class EditPictureAndSave extends HttpServlet {
 
         IPictureTableDao pictureDao = new PictureTableMSSQLDao();
 
-        if (true == needSaveFile) {
+        if (needSaveFile) {
             /* 如果使用者有上傳圖片才執行這段程式。 */
 
             System.out.println("origin pictureName : " + pictureName);
@@ -148,7 +146,7 @@ public class EditPictureAndSave extends HttpServlet {
             pictureTable.setPictureName(pictureName);
 
             File imageFolder = new File("C:/imageData/");
-            if (false == imageFolder.exists()) {
+            if (!imageFolder.exists()) {
                 imageFolder.mkdirs();
             }
 
@@ -223,12 +221,12 @@ public class EditPictureAndSave extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
-        request.setAttribute("classTypeList", classTypeList);/* 分類清單 */
-        request.setAttribute("pictureTableList", pictureTableList);/* 一頁五筆的圖片清單 */
-        request.setAttribute("pageNo", pageNo);/* 頁面編號 */
-        request.setAttribute("totalPages", totalPages);/* 總共有幾頁 */
+        request.setAttribute("classTypeList", classTypeList); /* 分類清單 */
+        request.setAttribute("pictureTableList", pictureTableList); /* 一頁五筆的圖片清單 */
+        request.setAttribute("pageNo", pageNo); /* 頁面編號 */
+        request.setAttribute("totalPages", totalPages); /* 總共有幾頁 */
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
         requestDispatcher.forward(request, response);
-    }// end of doPost() method
+    }
 }

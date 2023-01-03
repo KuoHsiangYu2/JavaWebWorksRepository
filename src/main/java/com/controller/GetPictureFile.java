@@ -68,10 +68,10 @@ public class GetPictureFile extends HttpServlet {
         // String mimeType = this.getServletContext().getMimeType(pictureName);
         // System.out.println("mimeType = " + mimeType);
 
-        // 原文網址：https://kknews.cc/code/n5xn4yq.html
+        // https://kknews.cc/code/n5xn4yq.html
         String userAgent = request.getHeader("User-agent");
         userAgent = userAgent.toLowerCase();
-        System.out.println("userAgent -> " + userAgent);
+        System.out.println("userAgent -> [" + userAgent + "]");
 
         boolean isInternetExplorer = false;
         if (stringIncludes(userAgent, "MSIE") || stringIncludes(userAgent, "trident")
@@ -95,7 +95,7 @@ public class GetPictureFile extends HttpServlet {
         /* 去除掉時間戳記，還原成原始的檔案名稱。 */
         pictureName = GlobalService.revertFileName(pictureName);
 
-        if (false == isInternetExplorer) {
+        if (!isInternetExplorer) {
             /* Google, Firefox, Opera瀏覽器 */
             pictureName = new String(pictureName.getBytes(), "ISO8859-1");
         } else {
@@ -104,7 +104,7 @@ public class GetPictureFile extends HttpServlet {
             pictureName = pictureName.replace("+", "%20");
         }
 
-        System.out.println("2 pictureName -> " + pictureName);
+        System.out.println("2 pictureName -> [" + pictureName + "]");
 
         /* 清空response */
         response.reset();
@@ -132,5 +132,5 @@ public class GetPictureFile extends HttpServlet {
                 inputStream = null;
             }
         }
-    }/* end of doGet() method */
+    }
 }

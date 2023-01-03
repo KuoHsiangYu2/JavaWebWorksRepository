@@ -28,7 +28,7 @@ public class InitialTable {
             // 取得當前這個作業系統的換行符號
             // Windows作業系統是 \r \n == CR LF == 13 10
             String newLine = System.getProperty("line.separator");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("USE SavePictureDB1" + newLine);
             sb.append("CREATE TABLE SavePictureDB1..PictureTableTwo" + newLine);
             sb.append("(" + newLine);
@@ -73,6 +73,6 @@ public class InitialTable {
             }
         }
 
-    }// end of main method
+    }
 
 }

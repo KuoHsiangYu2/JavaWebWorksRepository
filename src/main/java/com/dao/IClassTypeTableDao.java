@@ -6,12 +6,12 @@ import com.model.ClassTypeTable;
 
 public interface IClassTypeTableDao {
 
-    List<ClassTypeTable> getClassTypeList();
+    public abstract List<ClassTypeTable> getClassTypeList();
 
-    List<String> getClassTypeStringList();
+    public abstract List<String> getClassTypeStringList();
 
-    int deleteAll();
+    public abstract int deleteAll();
 
-    int insertAll(List<String> classTypeList);
+    public abstract int insertAll(List<String> classTypeList);
 
 }

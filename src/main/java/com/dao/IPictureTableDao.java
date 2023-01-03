@@ -7,30 +7,30 @@ import com.model.PictureTableTwo;
 
 public interface IPictureTableDao {
 
-    int getPageNo();
+    public abstract int getPageNo();
 
-    void setPageNo(int pageNo);
+    public abstract void setPageNo(int pageNo);
 
-    int getTotalPages();
+    public abstract int getTotalPages();
 
-    int savePicture(PictureTableTwo pictureTable);
+    public abstract int savePicture(PictureTableTwo pictureTable);
 
-    List<PictureTableTwo> getPagePicture(int pageNo);
+    public abstract List<PictureTableTwo> getPagePicture(int pageNo);
 
-    List<PictureTableTwo> getAllPicture();
+    public abstract List<PictureTableTwo> getAllPicture();
 
-    int getCount();
+    public abstract int getCount();
 
-    PictureTableTwo getFullPictureDataById(int index);
+    public abstract PictureTableTwo getFullPictureDataById(int index);
 
-    int saveAndUpdatePictureById(int index, PictureTableTwo newObj);
+    public abstract int saveAndUpdatePictureById(int index, PictureTableTwo newObj);
 
-    int deletePictureById(int index);
+    public abstract int deletePictureById(int index);
 
-    int resetTypeNameList(List<PictureTableTwo> updateTypeNameList);
+    public abstract int resetTypeNameList(List<PictureTableTwo> updateTypeNameList);
 
-    List<PictureTableTwo> getPagePicture(int pageNo, String targetString, PictureTableSearchType type);
+    public abstract List<PictureTableTwo> getPagePicture(int pageNo, String targetString, PictureTableSearchType type);
 
-    int getTotalPages(String targetString, PictureTableSearchType type);
+    public abstract int getTotalPages(String targetString, PictureTableSearchType type);
 
 }

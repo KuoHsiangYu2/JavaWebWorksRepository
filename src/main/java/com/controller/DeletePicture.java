@@ -96,12 +96,12 @@ public class DeletePicture extends HttpServlet {
         IClassTypeTableDao classTypeDao = new ClassTypeTableMSSQLDao();
         List<String> classTypeList = classTypeDao.getClassTypeStringList();
 
-        request.setAttribute("classTypeList", classTypeList);/* 分類清單 */
-        request.setAttribute("pictureTableList", pictureTableList);/* 一頁五筆的圖片清單 */
-        request.setAttribute("pageNo", pageNo);/* 頁面編號 */
-        request.setAttribute("totalPages", totalPages);/* 總共有幾頁 */
+        request.setAttribute("classTypeList", classTypeList); /* 分類清單 */
+        request.setAttribute("pictureTableList", pictureTableList); /* 一頁五筆的圖片清單 */
+        request.setAttribute("pageNo", pageNo); /* 頁面編號 */
+        request.setAttribute("totalPages", totalPages); /* 總共有幾頁 */
 
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAllPicture.jsp");
         requestDispatcher.forward(request, response);
-    }// end of doGet() method
+    }
 }

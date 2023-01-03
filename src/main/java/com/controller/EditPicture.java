@@ -72,5 +72,5 @@ public class EditPicture extends HttpServlet {
         /* 轉往 editPicturePage.jsp 修改頁面。 */
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("editPicturePage.jsp");
         requestDispatcher.forward(request, response);
-    }// end of doGet() method
+    }
 }
